@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Fredoka", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-panda-ink: #1a1a1d;
+  --color-panda-charcoal: #2b2c31;
+  --color-panda-paper: #faf9f6;
+  --color-panda-cream: #f2efe8;
+  --color-panda-red: #ef4b3d;
+  --color-panda-red-dark: #d63a2d;
+  --color-panda-bamboo: #4c9a6a;
+  --color-panda-bamboo-dark: #3a7c53;
+  --color-panda-gray: #6b6f76;
+}
+
+html,
+body {
+  @apply bg-panda-paper dark:bg-panda-ink;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+@keyframes panda-breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-panda-breathe {
+  animation: panda-breathe 4s ease-in-out infinite;
+}
+
+@keyframes panda-pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-panda-pop {
+  animation: panda-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
