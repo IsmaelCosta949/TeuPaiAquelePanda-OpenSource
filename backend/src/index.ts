@@ -32,6 +32,17 @@ function isReservedAddress(address: string): boolean {
 	return RESERVED_LOCAL_PARTS.has(localPart);
 }
 
+const CORS_HEADERS = {
+	'Access-Control-Allow-Origin': '*',
+};
+
+function jsonResponse(data: unknown, status = 200): Response {
+	return new Response(JSON.stringify(data), {
+		status,
+		headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
+	});
+}
+
 interface EmailArmazenado {
 	id: string;
 	from: string;
@@ -53,7 +64,14 @@ export default {
 		// mail clients send both, and plain text is safer/simpler to render.
 		const isHtml = !parsed.text && !!parsed.html;
 		const corpo = parsed.text || parsed.html || '';
-		const textoPlano = parsed.text || (parsed.html ? parsed.html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() : '');
+		const textoPlano =
+			parsed.text ||
+			(parsed.html
+				? parsed.html
+						.replace(/<[^>]*>/g, ' ')
+						.replace(/\s+/g, ' ')
+						.trim()
+				: '');
 
 		const novoEmail: EmailArmazenado = {
 			id: crypto.randomUUID(),
@@ -80,23 +98,15 @@ export default {
 
 		if (url.pathname === '/api/emails') {
 			const enderecoDeEmail = url.searchParams.get('address');
-			if (!enderecoDeEmail) return new Response('Forneça um email', { status: 400 });
+			if (!enderecoDeEmail) return jsonResponse({ error: 'Forneça um email' }, 400);
 
 			if (isReservedAddress(enderecoDeEmail)) {
-				return new Response('Endereço reservado', {
-					status: 403,
-					headers: { 'Access-Control-Allow-Origin': '*' },
-				});
+				return jsonResponse({ error: 'Endereço reservado' }, 403);
 			}
 
 			const emails = (await env.EMAILS_TEMP.get<EmailArmazenado[]>(enderecoDeEmail, { type: 'json' })) || [];
 
-			return new Response(JSON.stringify(emails), {
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*', // Permite seu localhost ler os dados
-				},
-			});
+			return jsonResponse(emails);
 		}
 
 		return new Response('API do Teu Pai Aquele Panda online! 🐼');
