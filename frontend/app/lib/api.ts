@@ -1,16 +1,7 @@
-import type { Message } from "./mockMail";
+import type { EmailArmazenado } from "~/types/email";
+import type { Message } from "~/types/message";
 
 const API_BASE = "https://***REMOVED-WORKER-SUBDOMAIN***";
-
-interface EmailArmazenado {
-  id: string;
-  from: string;
-  fromName: string;
-  subject: string;
-  preview: string;
-  body: string;
-  receivedAt: number;
-}
 
 export async function fetchMessages(address: string): Promise<Message[]> {
   const res = await fetch(
@@ -26,6 +17,7 @@ export async function fetchMessages(address: string): Promise<Message[]> {
     subject: e.subject,
     preview: e.preview,
     body: e.body,
+    isHtml: e.isHtml,
     receivedAt: e.receivedAt,
     read: false,
   }));

@@ -1,5 +1,37 @@
 import PostalMime from 'postal-mime';
 
+// Local parts that can never be read back through the public API — either
+// because they're a real address we operate (suporte@) or because they're
+// common admin/abuse targets. Keep this in sync with the frontend's list at
+// frontend/app/lib/reservedLocalParts.ts.
+const RESERVED_LOCAL_PARTS = new Set([
+	'suporte',
+	'support',
+	'admin',
+	'administrador',
+	'contato',
+	'contact',
+	'abuse',
+	'postmaster',
+	'webmaster',
+	'hostmaster',
+	'root',
+	'noreply',
+	'no-reply',
+	'security',
+	'seguranca',
+	'privacy',
+	'privacidade',
+	'legal',
+	'termos',
+	'info',
+]);
+
+function isReservedAddress(address: string): boolean {
+	const localPart = address.split('@')[0]?.trim().toLowerCase() ?? '';
+	return RESERVED_LOCAL_PARTS.has(localPart);
+}
+
 interface EmailArmazenado {
 	id: string;
 	from: string;
@@ -7,6 +39,7 @@ interface EmailArmazenado {
 	subject: string;
 	preview: string;
 	body: string;
+	isHtml: boolean;
 	receivedAt: number;
 }
 
@@ -16,15 +49,20 @@ export default {
 		const paraQuem = message.to;
 		const parsed = await PostalMime.parse(message.raw);
 
+		// Only treat it as HTML when there's no plain-text part at all — most
+		// mail clients send both, and plain text is safer/simpler to render.
+		const isHtml = !parsed.text && !!parsed.html;
 		const corpo = parsed.text || parsed.html || '';
+		const textoPlano = parsed.text || (parsed.html ? parsed.html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() : '');
 
 		const novoEmail: EmailArmazenado = {
 			id: crypto.randomUUID(),
 			from: parsed.from?.address || message.from,
 			fromName: parsed.from?.name || parsed.from?.address || message.from,
 			subject: parsed.subject || 'Sem assunto',
-			preview: corpo.slice(0, 140),
+			preview: textoPlano.slice(0, 140),
 			body: corpo,
+			isHtml,
 			receivedAt: Date.now(),
 		};
 
@@ -43,6 +81,13 @@ export default {
 		if (url.pathname === '/api/emails') {
 			const enderecoDeEmail = url.searchParams.get('address');
 			if (!enderecoDeEmail) return new Response('Forneça um email', { status: 400 });
+
+			if (isReservedAddress(enderecoDeEmail)) {
+				return new Response('Endereço reservado', {
+					status: 403,
+					headers: { 'Access-Control-Allow-Origin': '*' },
+				});
+			}
 
 			const emails = (await env.EMAILS_TEMP.get<EmailArmazenado[]>(enderecoDeEmail, { type: 'json' })) || [];
 

@@ -9,26 +9,12 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-
-const PANDA_FAVICON = `data:image/svg+xml,${encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-    <circle cx="46" cy="46" r="26" fill="#1a1a1d"/>
-    <circle cx="154" cy="46" r="26" fill="#1a1a1d"/>
-    <circle cx="100" cy="108" r="78" fill="#faf9f6" stroke="#1a1a1d" stroke-width="4"/>
-    <ellipse cx="68" cy="104" rx="24" ry="30" transform="rotate(-18 68 104)" fill="#1a1a1d"/>
-    <ellipse cx="132" cy="104" rx="24" ry="30" transform="rotate(18 132 104)" fill="#1a1a1d"/>
-    <circle cx="68" cy="106" r="9" fill="#faf9f6"/>
-    <circle cx="70" cy="108" r="4.5" fill="#1a1a1d"/>
-    <circle cx="132" cy="106" r="9" fill="#faf9f6"/>
-    <circle cx="134" cy="108" r="4.5" fill="#1a1a1d"/>
-    <ellipse cx="100" cy="128" rx="10" ry="7" fill="#1a1a1d"/>
-    <path d="M100 143 q-14 14 -28 4" stroke="#1a1a1d" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <path d="M100 143 q14 14 28 4" stroke="#1a1a1d" stroke-width="3" fill="none" stroke-linecap="round"/>
-  </svg>`,
-)}`;
+import { ErrorBoundaryLayout } from "./components/errorBoundaryLayout";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "icon", type: "image/svg+xml", href: PANDA_FAVICON },
+  { rel: "icon", href: "/favicon.ico", sizes: "any" },
+  { rel: "icon", type: "image/png", href: "/teupaiaquelepanda_logo_icon.png" },
+  { rel: "apple-touch-icon", href: "/teupaiaquelepanda_logo_icon.png" },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -81,11 +67,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   return (
     <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
+      <ErrorBoundaryLayout error={new Error(`${message}\n${details}`)} />
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
+        <pre className="mt-4 p-4 bg-gray-100 text-gray-800 rounded">
+          {stack}
         </pre>
       )}
     </main>
