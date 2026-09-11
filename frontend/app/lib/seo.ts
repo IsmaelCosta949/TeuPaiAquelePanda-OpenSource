@@ -1,4 +1,4 @@
-const SITE_URL = "https://teupaiaquelepanda.com.br";
+const SITE_URL = import.meta.env.VITE_SITE_URL;
 const SITE_NAME = "Teu Pai, Aquele Panda";
 const OG_IMAGE = `${SITE_URL}/teupaiaquelepanda_logo_trimmed.png`;
 

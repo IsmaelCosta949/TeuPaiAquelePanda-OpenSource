@@ -27,11 +27,6 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-// Dark is the default theme regardless of OS preference; a visitor only
-// gets light mode after explicitly toggling it via the Header button
-// (ThemeToggle), which remembers the choice in localStorage. Runs before
-// paint to avoid a flash of the wrong theme; suppressHydrationWarning on
-// <html> silences the expected class mismatch between server and client.
 const THEME_SYNC_SCRIPT = `(function(){try{var s=localStorage.getItem("panda-mail-theme");document.documentElement.classList.toggle("dark",s!=="light");}catch(e){document.documentElement.classList.add("dark");}})();`;
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -43,11 +38,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_SYNC_SCRIPT }} />
         <Meta />
         <Links />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=***REMOVED-ADSENSE-CLIENT-ID***"
-          crossOrigin="anonymous"
-        ></script>
+        {import.meta.env.VITE_ADSENSE_CLIENT_ID && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.VITE_ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+          ></script>
+        )}
       </head>
       <body>
         {children}

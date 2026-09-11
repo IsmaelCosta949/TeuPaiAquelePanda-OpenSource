@@ -1,7 +1,7 @@
 import type { EmailArmazenado } from "~/types/email";
 import type { Message } from "~/types/message";
 
-const API_BASE = "https://***REMOVED-WORKER-SUBDOMAIN***";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 export async function fetchMessages(address: string): Promise<Message[]> {
   const res = await fetch(
