@@ -84,7 +84,10 @@ export default function Terms() {
           </h2>
           <p>
             Dúvidas sobre estes termos? Manda um e-mail pra gente na{" "}
-            <a href="/suporte" className="text-panda-red font-medium">
+            <a
+              href="/suporte"
+              className="text-panda-red dark:text-panda-red-light font-medium"
+            >
               página de suporte
             </a>
             .

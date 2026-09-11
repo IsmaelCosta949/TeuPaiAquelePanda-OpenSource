@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { PandaMascot } from "./PandaMascot";
+import { PandaMascot } from "./images/PandaMascot";
 import { formatTime } from "../lib/format";
 import { useMail } from "../lib/MailContext";
 
@@ -30,16 +30,18 @@ export function MessageList() {
             className="w-full text-left px-4 py-3 flex items-center gap-3"
           >
             <span
+              aria-hidden="true"
               className={`w-2 h-2 rounded-full shrink-0 ${
-                msg.read ? "bg-transparent" : "bg-panda-red"
+                msg.read ? "bg-transparent" : "bg-panda-red dark:bg-panda-red-light"
               }`}
             />
+            {!msg.read && <span className="sr-only">Não lida: </span>}
             <span className="min-w-0 flex-1">
               <span className="flex items-baseline gap-2">
                 <span className="font-medium text-panda-ink dark:text-panda-paper truncate">
                   {msg.fromName}
                 </span>
-                <span className="text-xs text-panda-gray dark:text-white/40 shrink-0">
+                <span className="text-xs text-panda-gray dark:text-white/50 shrink-0">
                   {formatTime(msg.receivedAt)}
                 </span>
               </span>

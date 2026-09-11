@@ -12,5 +12,6 @@ export default [
     route("email/:id", "routes/view.tsx"),
     route("suporte", "routes/suporte.tsx"),
     route("termos", "routes/terms.tsx"),
+    route("for-devs", "routes/for-devs.tsx"),
   ]),
 ] satisfies RouteConfig;

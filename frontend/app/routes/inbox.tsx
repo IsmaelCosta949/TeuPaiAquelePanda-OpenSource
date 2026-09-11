@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router";
 import type { Route } from "./+types/inbox";
-import { PandaMascot } from "../components/PandaMascot";
-import { BambooLoader } from "../components/BambooLoader";
+import { PandaMascot } from "../components/images/PandaMascot";
+import { BambooLoader } from "../components/animations/BambooLoader";
 import { EmailAddressBar } from "../components/EmailAddressBar";
 import { MessageList } from "../components/MessageList";
 import { useMail } from "../lib/MailContext";
 import { buildPageMeta } from "../lib/seo";
+import { Button } from "../components/ui/button";
 
 export function meta({}: Route.MetaArgs) {
   return buildPageMeta({
@@ -27,12 +28,7 @@ export default function Inbox() {
         <p className="text-panda-gray dark:text-white/50 text-sm max-w-sm">
           Você ainda não tem um endereço ativo.
         </p>
-        <button
-          onClick={() => navigate("/")}
-          className="rounded-full bg-panda-red hover:bg-panda-red-dark text-white text-sm font-semibold px-4 py-2 transition-colors"
-        >
-          Criar um e-mail
-        </button>
+        <Button onClick={() => navigate("/")}>Criar um e-mail</Button>
       </section>
     );
   }
@@ -53,22 +49,27 @@ export default function Inbox() {
               </span>
             )}
           </h1>
-          <button
+          <Button
+            variant="outline"
             onClick={handleRefresh}
             disabled={refreshing}
-            className="text-xs sm:text-sm rounded-full border border-panda-ink/20 dark:border-white/20 text-panda-gray dark:text-white/60 px-3 py-1.5 hover:bg-panda-cream dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+            className="h-auto rounded-full border-panda-ink/20 bg-transparent px-3 py-1.5 text-xs font-normal text-panda-gray hover:bg-panda-cream dark:border-white/20 dark:text-white/60 dark:hover:bg-white/10 sm:text-sm"
           >
             <span className={refreshing ? "inline-block animate-spin" : ""}>
               ↻
             </span>{" "}
             atualizar
-          </button>
+          </Button>
         </div>
 
         <div className="relative">
           <MessageList />
           {refreshing && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-panda-paper/85 dark:bg-panda-ink/80 backdrop-blur-sm">
+            <div
+              role="status"
+              aria-live="polite"
+              className="absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-panda-paper/85 dark:bg-panda-ink/80 backdrop-blur-sm"
+            >
               <BambooLoader label="Buscando novos e-mails..." />
             </div>
           )}

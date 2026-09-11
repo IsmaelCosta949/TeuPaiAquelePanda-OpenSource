@@ -1,5 +1,13 @@
-import { createPortal } from "react-dom";
 import type { ConfirmDialogProps } from "../types/confirmDialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import { Button } from "./ui/button";
 
 export function ConfirmDialog({
   open,
@@ -10,43 +18,25 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
-  if (!open) return null;
-
-  return createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
-      role="dialog"
-      aria-modal="true"
-      onClick={onCancel}
-    >
-      <div
-        className="w-full max-w-sm rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-6 space-y-4 shadow-[4px_4px_0_0_var(--color-panda-ink)]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="font-display text-lg font-semibold text-panda-ink dark:text-panda-paper">
-          {title}
-        </h2>
-        {description && (
-          <p className="text-sm text-panda-gray dark:text-white/60">
-            {description}
-          </p>
-        )}
-        <div className="flex justify-end gap-3 pt-2">
-          <button
-            onClick={onCancel}
-            className="rounded-full border-2 border-panda-ink dark:border-white/30 text-panda-ink dark:text-panda-paper text-sm font-semibold px-4 py-2 hover:bg-panda-cream dark:hover:bg-white/10 transition-colors"
-          >
+  return (
+    // Dialog (unlike AlertDialog) closes on an outside click by default —
+    // AlertDialog hardcodes onPointerDownOutside/onInteractOutside to
+    // preventDefault inside Radix itself, which can't be overridden via
+    // props, so a plain Dialog is what actually lets clicking outside
+    // dismiss the confirmation.
+    <Dialog open={open} onOpenChange={(next) => !next && onCancel()}>
+      <DialogContent showCloseButton={false}>
+        <DialogHeader>
+          <DialogTitle className="font-display">{title}</DialogTitle>
+          {description && <DialogDescription>{description}</DialogDescription>}
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onClick={onCancel}>
             {cancelLabel}
-          </button>
-          <button
-            onClick={onConfirm}
-            className="rounded-full bg-panda-red hover:bg-panda-red-dark text-white text-sm font-semibold px-4 py-2 transition-colors"
-          >
-            {confirmLabel}
-          </button>
-        </div>
-      </div>
-    </div>,
-    document.body,
+          </Button>
+          <Button onClick={onConfirm}>{confirmLabel}</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

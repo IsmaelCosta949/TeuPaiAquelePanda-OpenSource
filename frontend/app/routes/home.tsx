@@ -1,11 +1,13 @@
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useId, useState } from "react";
 import { useNavigate } from "react-router";
 import type { Route } from "./+types/home";
-import { PandaMascot } from "../components/PandaMascot";
+import { PandaMascot } from "../components/images/PandaMascot";
 import { DOMAINS } from "../lib/addressWords";
 import { useMail } from "../lib/MailContext";
 import { isReservedLocalPart } from "../lib/reservedLocalParts";
 import { buildAppJsonLd, buildPageMeta } from "../lib/seo";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -22,6 +24,7 @@ export function meta({}: Route.MetaArgs) {
 const LOCAL_PART_PATTERN = /^[a-z0-9](?:[a-z0-9.-]{1,28}[a-z0-9])?$/;
 
 export default function Home() {
+  const errorId = useId();
   const { address, setCustomAddress, randomAddress } = useMail();
   const navigate = useNavigate();
   const [customLocal, setCustomLocal] = useState("");
@@ -39,12 +42,16 @@ export default function Home() {
       return;
     }
     if (isReservedLocalPart(slug)) {
-      setError("Esse endereço é reservado e não pode ser usado. Escolha outro.");
+      setError(
+        "Esse endereço é reservado e não pode ser usado. Escolha outro.",
+      );
       return;
     }
     const ok = setCustomAddress(`${slug}@${DOMAINS[0]}`);
     if (!ok) {
-      setError("Esse endereço é reservado e não pode ser usado. Escolha outro.");
+      setError(
+        "Esse endereço é reservado e não pode ser usado. Escolha outro.",
+      );
       return;
     }
     setError(null);
@@ -75,12 +82,7 @@ export default function Home() {
             <code className="block text-lg font-semibold text-panda-ink dark:text-panda-paper break-all">
               {address}
             </code>
-            <button
-              onClick={goToInbox}
-              className="rounded-full bg-panda-red hover:bg-panda-red-dark text-white text-sm font-semibold px-4 py-2 transition-colors"
-            >
-              Ir para a caixa de entrada
-            </button>
+            <Button onClick={goToInbox}>Ir para a caixa de entrada</Button>
           </div>
         ) : (
           <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-5 space-y-5 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
@@ -92,38 +94,44 @@ export default function Home() {
                 Crie o seu endereço
               </label>
               <div className="flex flex-wrap items-center gap-2">
-                <input
+                <Input
                   id="custom-local"
                   value={customLocal}
                   onChange={(e) => setCustomLocal(e.target.value)}
                   placeholder="seu-nome"
-                  className="min-w-0 flex-1 rounded-full border-2 border-panda-ink/20 dark:border-white/20 bg-transparent px-4 py-2 text-sm text-panda-ink dark:text-panda-paper focus:outline-none focus:border-panda-red"
+                  aria-invalid={!!error}
+                  aria-describedby={error ? errorId : undefined}
+                  className="h-auto min-w-0 flex-1 rounded-full border-2 border-panda-ink/20 bg-transparent px-4 py-2 text-sm text-panda-ink focus-visible:border-panda-red focus-visible:ring-0 dark:border-white/20 dark:text-panda-paper"
                 />
                 <span className="text-sm text-panda-gray dark:text-white/50">
                   @{DOMAINS[0]}
                 </span>
               </div>
-              {error && <p className="text-xs text-panda-red">{error}</p>}
-              <button
-                type="submit"
-                className="rounded-full bg-panda-red hover:bg-panda-red-dark text-white text-sm font-semibold px-4 py-2 transition-colors"
-              >
-                Criar meu e-mail
-              </button>
+              {error && (
+                <p
+                  id={errorId}
+                  role="alert"
+                  className="text-xs text-panda-red dark:text-panda-red-light"
+                >
+                  {error}
+                </p>
+              )}
+              <Button type="submit">Criar meu e-mail</Button>
             </form>
 
-            <div className="flex items-center gap-3 text-xs text-panda-gray dark:text-white/40">
+            <div className="flex items-center gap-3 text-xs text-panda-gray dark:text-white/50">
               <span className="h-px flex-1 bg-panda-ink/10 dark:bg-white/10" />
               ou
               <span className="h-px flex-1 bg-panda-ink/10 dark:bg-white/10" />
             </div>
 
-            <button
+            <Button
+              variant="outline"
               onClick={handleRandom}
-              className="w-full rounded-full border-2 border-panda-ink dark:border-white/30 text-panda-ink dark:text-panda-paper text-sm font-semibold px-4 py-2 hover:bg-panda-cream dark:hover:bg-white/10 transition-colors"
+              className="w-full rounded-full border-2 border-panda-ink bg-transparent text-panda-ink hover:bg-panda-cream dark:border-white/30 dark:text-panda-paper dark:hover:bg-white/10"
             >
               🎲 Sortear um endereço pra mim
-            </button>
+            </Button>
           </div>
         )}
       </div>

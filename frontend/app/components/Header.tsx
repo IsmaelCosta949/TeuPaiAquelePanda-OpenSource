@@ -1,10 +1,12 @@
 import { NavLink } from "react-router";
+import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_LINKS = [
   { to: "/", label: "Início" },
   { to: "/caixa-de-entrada", label: "Caixa de entrada" },
   { to: "/suporte", label: "Suporte" },
   { to: "/termos", label: "Termos" },
+  { to: "/for-devs", label: "For Devs" },
 ];
 
 export function Header() {
@@ -21,7 +23,7 @@ export function Header() {
             <span className="block text-sm sm:text-base font-medium text-panda-ink dark:text-panda-paper">
               Teu Pai,
             </span>
-            <span className="block text-lg sm:text-xl font-bold text-panda-red -mt-0.5">
+            <span className="block text-lg sm:text-xl font-bold text-panda-red dark:text-panda-red-light -mt-0.5">
               Aquele Panda
             </span>
           </span>
@@ -36,7 +38,7 @@ export function Header() {
               className={({ isActive }) =>
                 `transition-colors ${
                   isActive
-                    ? "text-panda-red font-semibold"
+                    ? "text-panda-red dark:text-panda-red-light font-semibold"
                     : "text-panda-gray dark:text-white/50 hover:text-panda-ink dark:hover:text-panda-paper"
                 }`
               }
@@ -44,6 +46,7 @@ export function Header() {
               {link.label}
             </NavLink>
           ))}
+          <ThemeToggle />
         </nav>
       </div>
     </header>

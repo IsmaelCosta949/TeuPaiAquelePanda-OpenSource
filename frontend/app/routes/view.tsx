@@ -2,15 +2,17 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import type { Route } from "./+types/view";
 import { EmailBody } from "../components/EmailBody";
-import { PandaMascot } from "../components/PandaMascot";
+import { PandaMascot } from "../components/images/PandaMascot";
 import { formatTime } from "../lib/format";
 import { useMail } from "../lib/MailContext";
 import { buildPageMeta } from "../lib/seo";
+import { Button } from "../components/ui/button";
 
 export function meta({ params }: Route.MetaArgs) {
   return buildPageMeta({
     title: "E-mail — Teu Pai, Aquele Panda",
-    description: "Visualização de uma mensagem recebida no seu e-mail temporário.",
+    description:
+      "Visualização de uma mensagem recebida no seu e-mail temporário.",
     path: `/email/${params.id}`,
     noindex: true,
   });
@@ -32,12 +34,9 @@ export default function ViewMessage() {
         <p className="text-panda-gray dark:text-white/50 text-sm">
           Esse e-mail não foi encontrado (ou já expirou).
         </p>
-        <Link
-          to="/caixa-de-entrada"
-          className="rounded-full bg-panda-red hover:bg-panda-red-dark text-white text-sm font-semibold px-4 py-2 transition-colors"
-        >
-          Voltar para a caixa de entrada
-        </Link>
+        <Button asChild>
+          <Link to="/caixa-de-entrada">Voltar para a caixa de entrada</Link>
+        </Button>
       </section>
     );
   }
@@ -46,7 +45,7 @@ export default function ViewMessage() {
     <section className="space-y-4">
       <Link
         to="/caixa-de-entrada"
-        className="inline-block text-sm text-panda-gray dark:text-white/50 hover:text-panda-red transition-colors"
+        className="inline-block text-sm text-panda-gray dark:text-white/50 hover:text-panda-red dark:hover:text-panda-red-light transition-colors"
       >
         ← Voltar para a caixa de entrada
       </Link>
@@ -56,7 +55,7 @@ export default function ViewMessage() {
           <h1 className="font-display text-xl font-semibold text-panda-ink dark:text-panda-paper">
             {message.subject}
           </h1>
-          <p className="text-xs text-panda-gray dark:text-white/40 mt-1">
+          <p className="text-xs text-panda-gray dark:text-white/50 mt-1">
             de {message.fromName} &lt;{message.from}&gt; ·{" "}
             {formatTime(message.receivedAt)}
           </p>

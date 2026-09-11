@@ -28,14 +28,14 @@ export default function Suporte() {
         </p>
         <a
           href={`mailto:${SUPPORT_EMAIL}`}
-          className="inline-block text-lg font-semibold text-panda-red break-all"
+          className="inline-block text-lg font-semibold text-panda-red dark:text-panda-red-light break-all"
         >
           {SUPPORT_EMAIL}
         </a>
-        <p className="text-xs text-panda-gray dark:text-white/40">
+        <p className="text-xs text-panda-gray dark:text-white/50">
           Conta o que aconteceu com o máximo de detalhes possível (endereço
-          usado, hora aproximada, o que esperava receber). Respondemos assim
-          que o panda acordar da soneca 🐼
+          usado, hora aproximada, o que esperava receber). Respondemos assim que
+          o panda acordar da soneca 🐼
         </p>
       </div>
     </section>

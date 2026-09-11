@@ -3,10 +3,17 @@ import { useNavigate } from "react-router";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { formatClock } from "../lib/format";
 import { useMail } from "../lib/MailContext";
+import { Button } from "./ui/button";
 
 export function EmailAddressBar() {
-  const { address, secondsLeft, copied, handleCopy, randomAddress, clearAddress } =
-    useMail();
+  const {
+    address,
+    secondsLeft,
+    copied,
+    handleCopy,
+    randomAddress,
+    clearAddress,
+  } = useMail();
   const navigate = useNavigate();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -34,25 +41,24 @@ export function EmailAddressBar() {
         </code>
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          onClick={handleCopy}
-          className="rounded-full bg-panda-red hover:bg-panda-red-dark text-white text-sm font-semibold px-4 py-2 transition-colors"
-        >
+        <Button onClick={handleCopy}>
           {copied ? "Copiado! ✓" : "Copiar endereço"}
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="outline"
           onClick={handleNewAddressClick}
-          className="rounded-full border-2 border-panda-ink dark:border-white/30 text-panda-ink dark:text-panda-paper text-sm font-semibold px-4 py-2 hover:bg-panda-cream dark:hover:bg-white/10 transition-colors"
+          className="rounded-full border-2 border-panda-ink bg-transparent text-panda-ink hover:bg-panda-cream dark:border-white/30 dark:text-panda-paper dark:hover:bg-white/10"
         >
           Novo endereço
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="destructive"
           onClick={() => setDeleteConfirmOpen(true)}
-          className="rounded-full border-2 border-panda-red/40 text-panda-red text-sm font-semibold px-4 py-2 hover:bg-panda-red/10 transition-colors"
+          className="rounded-full"
         >
           Apagar e-mail
-        </button>
-        <span className="ml-auto text-xs font-mono text-panda-gray dark:text-white/40">
+        </Button>
+        <span className="ml-auto text-xs font-mono text-panda-gray dark:text-white/50">
           expira em {formatClock(secondsLeft)}
         </span>
       </div>

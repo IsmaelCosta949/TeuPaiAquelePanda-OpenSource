@@ -1,4 +1,7 @@
-import type { BambooLoaderProps } from "../types/bambooLoader";
+export type BambooLoaderProps = {
+  label?: string;
+  className?: string;
+};
 
 export function BambooLoader({ label, className }: BambooLoaderProps) {
   return (

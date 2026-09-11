@@ -4,7 +4,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { UpdateAnnouncementDialog } from "./UpdateAnnouncementDialog";
 import { MailProvider } from "../lib/MailContext";
-import { UPDATE_VERSION } from "../lib/updateAnnouncement";
+import { UPDATE_DATE } from "../lib/updateAnnouncement";
 
 const SEEN_UPDATE_KEY = "panda-mail-seen-update-version";
 
@@ -12,29 +12,34 @@ export default function SiteLayout() {
   const [showUpdate, setShowUpdate] = useState(false);
 
   useEffect(() => {
-    try {
-      if (localStorage.getItem(SEEN_UPDATE_KEY) !== UPDATE_VERSION) {
-        setShowUpdate(true);
-      }
-    } catch {
-      // storage unavailable — just skip the announcement
+    if (localStorage.getItem(SEEN_UPDATE_KEY) !== UPDATE_DATE) {
+      return setShowUpdate(true);
     }
   }, []);
 
   function dismissUpdate() {
     setShowUpdate(false);
     try {
-      localStorage.setItem(SEEN_UPDATE_KEY, UPDATE_VERSION);
+      localStorage.setItem(SEEN_UPDATE_KEY, UPDATE_DATE);
     } catch {
-      // ignore storage failures
+      console.warn("Failed to save update version to localStorage");
     }
   }
 
   return (
     <MailProvider>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-panda-red focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Pular para o conteúdo
+      </a>
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-10 space-y-10">
+        <main
+          id="main-content"
+          className="flex-1 max-w-5xl mx-auto w-full px-4 py-10 space-y-10"
+        >
           <Outlet />
         </main>
         <Footer />

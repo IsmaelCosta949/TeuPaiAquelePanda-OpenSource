@@ -2,11 +2,6 @@ import { useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import type { EmailBodyProps } from "../types/emailBody";
 
-// Links inside a stranger's email should never take over the tab or leak
-// the referrer — force them to open safely in a new one. Guarded to the
-// browser: DOMPurify's Node-side build has no real `window`, so calling
-// this at module scope during any server-side module evaluation (dev's
-// SSR module graph, prerendering) would throw.
 if (typeof window !== "undefined") {
   DOMPurify.addHook("afterSanitizeAttributes", (node) => {
     if (node.tagName === "A") {
@@ -44,9 +39,6 @@ export function EmailBody({ body, isHtml }: EmailBodyProps) {
     <iframe
       ref={iframeRef}
       title="Conteúdo do e-mail"
-      // No "allow-scripts" — nothing inside can ever execute JS, regardless
-      // of what slips past sanitization. "allow-same-origin" only lets *us*
-      // read its height below; it's safe without allow-scripts alongside it.
       sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
       srcDoc={sanitized}
       onLoad={handleLoad}

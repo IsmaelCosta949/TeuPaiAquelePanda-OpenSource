@@ -1,4 +1,6 @@
-import type { PandaMascotProps } from "../types/pandaMascot";
+export type PandaMascotProps = {
+  className?: string;
+};
 
 export function PandaMascot({ className }: PandaMascotProps) {
   return (
