@@ -7,10 +7,12 @@
 		"enabled": true,
 	},
 	"upload_source_maps": true,
+	// Run `npx wrangler kv namespace create EMAILS_TEMP` and swap in the id
+	// it prints — this one is tied to the original deployment's account.
 	"kv_namespaces": [
 		{
-			"binding": "EMAILS_TEMP",
-			"id": "***REMOVED-KV-NAMESPACE-ID***",
+			"binding": "KV_NAME",
+			"id": "your-kv-namespace-id",
 		},
 	],
 }
