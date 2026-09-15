@@ -4,7 +4,7 @@ import type { Route } from "./+types/view";
 import { EmailBody } from "../components/EmailBody";
 import { PandaMascot } from "../components/images/PandaMascot";
 import { formatTime } from "../lib/format";
-import { useMail } from "../lib/MailContext";
+import { useMail } from "../hooks/MailContext";
 import { buildPageMeta } from "../lib/seo";
 import { Button } from "../components/ui/button";
 

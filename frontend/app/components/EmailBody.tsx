@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import DOMPurify from "dompurify";
-import type { EmailBodyProps } from "../types/emailBody";
 
 if (typeof window !== "undefined") {
   DOMPurify.addHook("afterSanitizeAttributes", (node) => {
@@ -11,19 +10,19 @@ if (typeof window !== "undefined") {
   });
 }
 
-export function EmailBody({ body, isHtml }: EmailBodyProps) {
+export function EmailBody({ ...props }: { body: string; isHtml: boolean }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState(120);
 
-  if (!isHtml) {
+  if (!props.isHtml) {
     return (
       <div className="text-sm text-panda-ink dark:text-white/80 whitespace-pre-line">
-        {body}
+        {props.body}
       </div>
     );
   }
 
-  const sanitized = DOMPurify.sanitize(body, {
+  const sanitized = DOMPurify.sanitize(props.body, {
     WHOLE_DOCUMENT: true,
     ADD_TAGS: ["style"],
   });

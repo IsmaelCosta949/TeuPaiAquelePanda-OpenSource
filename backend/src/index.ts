@@ -1,9 +1,5 @@
 import PostalMime from 'postal-mime';
 
-// Local parts that can never be read back through the public API — either
-// because they're a real address we operate (suporte@) or because they're
-// common admin/abuse targets. Keep this in sync with the frontend's list at
-// frontend/app/lib/reservedLocalParts.ts.
 const RESERVED_LOCAL_PARTS = new Set([
 	'suporte',
 	'support',
@@ -56,12 +52,10 @@ interface EmailArmazenado {
 
 export default {
 	// 1. RECEBE O EMAIL DA CLOUDFLARE
-	async email(message, env, ctx) {
+	async email(message, env) {
 		const paraQuem = message.to;
 		const parsed = await PostalMime.parse(message.raw);
 
-		// Only treat it as HTML when there's no plain-text part at all — most
-		// mail clients send both, and plain text is safer/simpler to render.
 		const isHtml = !parsed.text && !!parsed.html;
 		const corpo = parsed.text || parsed.html || '';
 		const textoPlano =
@@ -93,7 +87,7 @@ export default {
 	},
 
 	// 2. ENTREGA OS EMAILS PARA O SEU FRONTEND (API)
-	async fetch(request, env, ctx) {
+	async fetch(request, env) {
 		const url = new URL(request.url);
 
 		if (url.pathname === '/api/emails') {

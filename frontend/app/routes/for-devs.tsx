@@ -11,7 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import { formatCNPJ, formatCPF, formatRG } from "~/lib/formatters";
+import { formatCNPJ, formatCPF, formatRG } from "~/lib/format";
 
 export function meta({}: Route.MetaArgs) {
   return buildPageMeta({

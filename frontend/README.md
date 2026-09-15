@@ -1,87 +1,84 @@
-# Welcome to React Router!
+# Frontend — Teu Pai, Aquele Panda
 
-A modern, production-ready template for building full-stack React applications using React Router.
+App em React Router v8 do **Teu Pai, Aquele Panda**, um serviço de e-mail descartável em português. Permite que visitantes criem uma caixa de entrada temporária sem cadastro, e ainda traz algumas ferramentas para desenvolvedores.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+Renderizado como uma SPA estática pré-renderizada (`ssr: false`) — veja [react-router.config.ts](react-router.config.ts).
 
-## Features
+## Funcionalidades
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- **Caixa de entrada temporária** (`/caixa-de-entrada`) — gera um endereço aleatório ou permite escolher um local part customizado, e consulta a API do backend em busca de novas mensagens.
+- **Visualização de mensagem** (`/email/:id`) — lê uma mensagem, com corpos em HTML sanitizados via [DOMPurify](https://github.com/cure53/DOMPurify) antes de renderizar.
+- **Ferramentas para devs** (`/for-devs`) — gerador de CPF/CNPJ/RG fictícios com dígitos verificadores válidos, gerador de senha forte, formatador de JSON e decodificador de JWT.
+- **Suporte** (`/suporte`) e **Termos de Uso** (`/termos`).
+- Alternância de tema claro/escuro, metadados de SEO + dados estruturados por rota (`app/lib/seo.ts`), sitemap/robots.txt para as rotas pré-renderizadas.
 
-## Getting Started
-
-### Installation
-
-Install the dependencies:
+## Setup
 
 ```bash
 npm install
+cp .env.example .env
 ```
 
-### Development
+Preencha o `.env`:
 
-Start the development server with HMR:
+| Variável                  | Finalidade                                            |
+| -------------------------- | ------------------------------------------------------ |
+| `VITE_API_BASE`            | URL base da API do [backend](../backend)              |
+| `VITE_SITE_URL`            | URL canônica do site, usada nos metadados de SEO       |
+| `VITE_ADSENSE_CLIENT_ID`   | Client id do Google AdSense (opcional)                |
+
+## Desenvolvimento
 
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+O app roda em `http://localhost:5173`.
 
-## Building for Production
-
-Create a production build:
+## Build de produção
 
 ```bash
 npm run build
 ```
 
-## Deployment
+```
+build/
+├── client/   # assets estáticos
+└── server/   # entrada de servidor (não usada em runtime já que ssr: false, mantida para o @react-router/serve)
+```
 
-### Docker Deployment
+## Outros comandos
 
-To build and run using Docker:
+| Comando             | Finalidade                                |
+| -------------------- | ------------------------------------------ |
+| `npm run typecheck`  | Gera os tipos das rotas e roda o `tsc`     |
+| `npm run start`      | Serve um build de produção localmente      |
+
+## Deploy
+
+### Docker
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+docker build -t frontend .
+docker run -p 3000:3000 frontend
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+Pode ser implantado em qualquer plataforma com suporte a Docker (Cloudflare, Fly.io, Railway, Render, etc.).
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+## Stack
 
-### DIY Deployment
+- [React Router v8](https://reactrouter.com/) (framework mode, pré-renderizado)
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/) (estilo `radix-nova`) + primitivas [Radix UI](https://www.radix-ui.com/)
+- [DOMPurify](https://github.com/cure53/DOMPurify) para sanitizar corpos de e-mail em HTML
+- TypeScript em todo o projeto
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
+## Estrutura do projeto
 
 ```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+app/
+├── components/   # componentes de UI (primitivas do shadcn em components/ui)
+├── lib/          # cliente de API, helpers de endereço/formatação, SEO, contexto de e-mail
+├── routes/       # componentes de rota (veja app/routes.ts para a árvore de rotas)
+└── types/        # tipos TypeScript compartilhados
 ```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.

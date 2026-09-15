@@ -6,94 +6,37 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { generateAddress, welcomeMessage } from "./mockMail";
-import { fetchMessages } from "./api";
-import { isReservedAddress } from "./reservedLocalParts";
-import type { Message } from "../types/message";
-import type {
-  MailContextValue,
-  StoredAddress,
-  StoredReadIds,
-} from "../types/mailContext";
+import { generateAddress, welcomeMessage } from "../lib/mockMail";
+import { fetchMessages } from "../lib/api";
+import { isReservedAddress } from "../lib/reservedLocalParts";
+import {
+  clearStoredAddress,
+  clearStoredReadIds,
+  persistAddress,
+  persistReadIds,
+  readStoredAddress,
+  readStoredReadIds,
+} from "../lib/mailStorage";
+import type { Message } from "../types/mail";
 
 const ADDRESS_LIFETIME_SECONDS = 60 * 60;
 const POLL_INTERVAL_MS = 10_000;
 const MIN_REFRESH_MS = 2000;
 
-const STORAGE_ADDRESS_KEY = "panda-mail-address";
-const STORAGE_EXPIRES_KEY = "panda-mail-expires-at";
-
-function clearStoredAddress() {
-  try {
-    localStorage.removeItem(STORAGE_ADDRESS_KEY);
-    localStorage.removeItem(STORAGE_EXPIRES_KEY);
-  } catch {
-    // ignore
-  }
-}
-
-function readStoredAddress(): StoredAddress | null {
-  try {
-    const storedAddress = localStorage.getItem(STORAGE_ADDRESS_KEY);
-    const storedExpiresAt = Number(localStorage.getItem(STORAGE_EXPIRES_KEY));
-    if (!storedAddress || !storedExpiresAt || storedExpiresAt <= Date.now()) {
-      return null;
-    }
-    // Guards against someone hand-editing localStorage to claim a reserved
-    // address (e.g. suporte@...) without going through validation.
-    if (isReservedAddress(storedAddress)) {
-      clearStoredAddress();
-      return null;
-    }
-    return {
-      address: storedAddress,
-      secondsLeft: Math.ceil((storedExpiresAt - Date.now()) / 1000),
-    };
-  } catch {
-    return null;
-  }
-}
-
-function persistAddress(addr: string, expiresAt: number) {
-  try {
-    localStorage.setItem(STORAGE_ADDRESS_KEY, addr);
-    localStorage.setItem(STORAGE_EXPIRES_KEY, String(expiresAt));
-  } catch {
-    // storage disabled/unavailable — address just won't survive a reload
-  }
-}
-
-const STORAGE_READ_IDS_KEY = "panda-mail-read-ids";
-
-function readStoredReadIds(addr: string): Set<string> {
-  try {
-    const raw = localStorage.getItem(STORAGE_READ_IDS_KEY);
-    if (!raw) return new Set();
-    const parsed: StoredReadIds = JSON.parse(raw);
-    return parsed.address === addr ? new Set(parsed.ids) : new Set();
-  } catch {
-    return new Set();
-  }
-}
-
-function persistReadIds(addr: string, ids: Set<string>) {
-  try {
-    localStorage.setItem(
-      STORAGE_READ_IDS_KEY,
-      JSON.stringify({ address: addr, ids: [...ids] }),
-    );
-  } catch {
-    // ignore storage failures
-  }
-}
-
-function clearStoredReadIds() {
-  try {
-    localStorage.removeItem(STORAGE_READ_IDS_KEY);
-  } catch {
-    // ignore
-  }
-}
+type MailContextValue = {
+  address: string | null;
+  messages: Message[];
+  secondsLeft: number;
+  copied: boolean;
+  refreshing: boolean;
+  randomAddress: () => void;
+  setCustomAddress: (fullAddress: string) => boolean;
+  clearAddress: () => void;
+  handleCopy: () => void;
+  handleRefresh: () => Promise<void>;
+  markRead: (id: string) => void;
+  getMessage: (id: string) => Message | undefined;
+};
 
 const MailContext = createContext<MailContextValue | null>(null);
 
@@ -181,8 +124,6 @@ export function MailProvider({ children }: { children: ReactNode }) {
     }, POLL_INTERVAL_MS);
   }
 
-  // Countdown for address expiry: always running, resynced from the real
-  // expiry timestamp (not a naive decrement) so it can't drift.
   useEffect(() => {
     if (!address) return;
 
@@ -201,8 +142,6 @@ export function MailProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, [address]);
 
-  // New-mail polling: every POLL_INTERVAL_MS while the tab is visible,
-  // paused entirely while hidden, and re-synced immediately on return.
   useEffect(() => {
     if (!address) return;
     const addr = address;

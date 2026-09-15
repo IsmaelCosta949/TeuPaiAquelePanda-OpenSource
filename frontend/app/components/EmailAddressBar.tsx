@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { formatClock } from "../lib/format";
-import { useMail } from "../lib/MailContext";
+import { useMail } from "../hooks/MailContext";
 import { Button } from "./ui/button";
 
 export function EmailAddressBar() {

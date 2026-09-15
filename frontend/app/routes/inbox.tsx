@@ -4,7 +4,7 @@ import { PandaMascot } from "../components/images/PandaMascot";
 import { BambooLoader } from "../components/animations/BambooLoader";
 import { EmailAddressBar } from "../components/EmailAddressBar";
 import { MessageList } from "../components/MessageList";
-import { useMail } from "../lib/MailContext";
+import { useMail } from "../hooks/MailContext";
 import { buildPageMeta } from "../lib/seo";
 import { Button } from "../components/ui/button";
 

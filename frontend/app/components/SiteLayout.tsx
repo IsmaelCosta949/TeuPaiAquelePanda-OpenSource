@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { UpdateAnnouncementDialog } from "./UpdateAnnouncementDialog";
-import { MailProvider } from "../lib/MailContext";
+import { MailProvider } from "../hooks/MailContext";
 import { UPDATE_DATE } from "../lib/updateAnnouncement";
 
 const SEEN_UPDATE_KEY = "panda-mail-seen-update-version";

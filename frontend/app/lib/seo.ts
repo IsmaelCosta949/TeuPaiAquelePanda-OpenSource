@@ -41,9 +41,6 @@ export function buildPageMeta({
   return meta;
 }
 
-// Structured data (schema.org) describing the tool itself for Google's rich
-// results — invisible to users, only read by search engines. Only makes
-// sense on the homepage, since it identifies the app as a whole.
 export function buildAppJsonLd() {
   return {
     "script:ld+json": {

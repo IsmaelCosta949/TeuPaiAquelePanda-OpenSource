@@ -5,10 +5,6 @@ import { Button } from "./ui/button";
 const THEME_KEY = "panda-mail-theme";
 
 export function ThemeToggle() {
-  // Server and first client render can't know the real theme (it's read
-  // from the DOM, set by the blocking script in root.tsx) — mounted stays
-  // false until then so both renders agree on a neutral placeholder,
-  // avoiding a hydration mismatch on the icon.
   const [mounted, setMounted] = useState(false);
   const [dark, setDark] = useState(true);
 
@@ -24,7 +20,7 @@ export function ThemeToggle() {
     try {
       localStorage.setItem(THEME_KEY, next ? "dark" : "light");
     } catch {
-      // storage unavailable — theme just won't persist across visits
+      console.warn("Failed to persist theme to localStorage");
     }
   }
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import type { Route } from "./+types/home";
 import { PandaMascot } from "../components/images/PandaMascot";
 import { DOMAINS } from "../lib/addressWords";
-import { useMail } from "../lib/MailContext";
+import { useMail } from "../hooks/MailContext";
 import { isReservedLocalPart } from "../lib/reservedLocalParts";
 import { buildAppJsonLd, buildPageMeta } from "../lib/seo";
 import { Button } from "../components/ui/button";

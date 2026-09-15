@@ -1,5 +1,4 @@
 import { UPDATE_ITEMS, UPDATE_TITLE } from "../lib/updateAnnouncement";
-import type { UpdateAnnouncementDialogProps } from "../types/updateAnnouncementDialog";
 import {
   Dialog,
   DialogContent,
@@ -10,11 +9,13 @@ import {
 import { Button } from "./ui/button";
 
 export function UpdateAnnouncementDialog({
-  open,
-  onClose,
-}: UpdateAnnouncementDialogProps) {
+  ...props
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   return (
-    <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
+    <Dialog open={props.open} onOpenChange={(next) => !next && props.onClose()}>
       <DialogContent showCloseButton={false} className="max-w-md">
         <DialogHeader>
           <DialogTitle className="font-display text-lg">
@@ -27,7 +28,7 @@ export function UpdateAnnouncementDialog({
           ))}
         </ul>
         <DialogFooter>
-          <Button onClick={onClose}>Entendi!</Button>
+          <Button onClick={props.onClose}>Entendi!</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

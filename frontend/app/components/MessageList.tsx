@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { PandaMascot } from "./images/PandaMascot";
 import { formatTime } from "../lib/format";
-import { useMail } from "../lib/MailContext";
+import { useMail } from "../hooks/MailContext";
 
 export function MessageList() {
   const { messages } = useMail();
@@ -32,7 +32,9 @@ export function MessageList() {
             <span
               aria-hidden="true"
               className={`w-2 h-2 rounded-full shrink-0 ${
-                msg.read ? "bg-transparent" : "bg-panda-red dark:bg-panda-red-light"
+                msg.read
+                  ? "bg-transparent"
+                  : "bg-panda-red dark:bg-panda-red-light"
               }`}
             />
             {!msg.read && <span className="sr-only">Não lida: </span>}

@@ -1,4 +1,4 @@
-import type { Message } from "~/types/message";
+import type { Message } from "~/types/mail";
 import { ADJECTIVES, DOMAINS, NOUNS } from "./addressWords";
 
 function randomFrom<T>(list: T[]): T {
