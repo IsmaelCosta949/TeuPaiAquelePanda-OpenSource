@@ -18,8 +18,10 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Inbox() {
-  const { address, messages, refreshing, handleRefresh } = useMail();
+  const { ready, address, messages, refreshing, handleRefresh } = useMail();
   const navigate = useNavigate();
+
+  if (!ready) return null;
 
   if (!address) {
     return (
@@ -28,7 +30,7 @@ export default function Inbox() {
         <p className="text-panda-gray dark:text-white/50 text-sm max-w-sm">
           Você ainda não tem um endereço ativo.
         </p>
-        <Button onClick={() => navigate("/")}>Criar um e-mail</Button>
+        <Button onPress={() => navigate("/email-temporario/")}>Criar um e-mail</Button>
       </section>
     );
   }
@@ -51,8 +53,8 @@ export default function Inbox() {
           </h1>
           <Button
             variant="outline"
-            onClick={handleRefresh}
-            disabled={refreshing}
+            onPress={handleRefresh}
+            isDisabled={refreshing}
             className="h-auto rounded-full border-panda-ink/20 bg-transparent px-3 py-1.5 text-xs font-normal text-panda-gray hover:bg-panda-cream dark:border-white/20 dark:text-white/60 dark:hover:bg-white/10 sm:text-sm"
           >
             <span className={refreshing ? "inline-block animate-spin" : ""}>

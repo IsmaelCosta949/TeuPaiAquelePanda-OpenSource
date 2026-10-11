@@ -1,66 +1,54 @@
-"use client"
-
-import * as React from "react"
+import {
+  Label,
+  Slider as AriaSlider,
+  SliderOutput,
+  SliderThumb,
+  SliderTrack,
+  type SliderProps as AriaSliderProps,
+} from "react-aria-components"
 import { cn } from "cn"
-import { Slider as SliderPrimitive } from "radix-ui"
 
-function Slider({
-  className,
-  defaultValue,
-  value,
-  min = 0,
-  max = 100,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledby,
-  ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
-  const _values = React.useMemo(
-    () =>
-      Array.isArray(value)
-        ? value
-        : Array.isArray(defaultValue)
-          ? defaultValue
-          : [min, max],
-    [value, defaultValue, min, max]
-  )
+type SliderProps = Omit<AriaSliderProps<number>, "className"> & {
+  className?: string
+  /** Rótulo visível; o valor atual aparece ao lado via SliderOutput. */
+  label: string
+}
 
+function Slider({ className, label, ...props }: SliderProps) {
   return (
-    <SliderPrimitive.Root
+    <AriaSlider
       data-slot="slider"
-      defaultValue={defaultValue}
-      value={value}
-      min={min}
-      max={max}
       className={cn(
-        "relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:min-h-40 data-vertical:w-auto data-vertical:flex-col",
+        "flex w-full items-center gap-3 select-none disabled:opacity-50",
         className
       )}
       {...props}
     >
-      <SliderPrimitive.Track
+      <div className="flex shrink-0 gap-1 text-xs text-panda-gray dark:text-white/50">
+        <Label>{label}:</Label>
+        <SliderOutput />
+      </div>
+      <SliderTrack
         data-slot="slider-track"
-        className="relative grow overflow-hidden rounded-full bg-muted data-horizontal:h-1 data-horizontal:w-full data-vertical:h-full data-vertical:w-1"
+        className="relative flex h-3 grow touch-none items-center"
       >
-        <SliderPrimitive.Range
-          data-slot="slider-range"
-          className="absolute bg-primary select-none data-horizontal:h-full data-vertical:w-full"
-        />
-      </SliderPrimitive.Track>
-      {Array.from({ length: _values.length }, (_, index) => (
-        <SliderPrimitive.Thumb
-          data-slot="slider-thumb"
-          key={index}
-          // Root isn't the focusable/interactive part of a Radix slider —
-          // each Thumb is (role="slider"), so an aria-label passed to the
-          // component has to land here, not on Root, or the control has no
-          // accessible name at all. Only meaningful for single-thumb use;
-          // a multi-thumb slider would need a distinct label per thumb.
-          aria-label={_values.length === 1 ? ariaLabel : undefined}
-          aria-labelledby={_values.length === 1 ? ariaLabelledby : undefined}
-          className="relative block size-3 shrink-0 rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 disabled:pointer-events-none disabled:opacity-50"
-        />
-      ))}
-    </SliderPrimitive.Root>
+        {({ state }) => (
+          <>
+            <div className="absolute h-1 w-full overflow-hidden rounded-full bg-muted">
+              <div
+                data-slot="slider-range"
+                className="h-full bg-panda-red"
+                style={{ width: `${state.getThumbPercent(0) * 100}%` }}
+              />
+            </div>
+            <SliderThumb
+              data-slot="slider-thumb"
+              className="top-1/2 relative block size-3 rounded-full border border-panda-red bg-white ring-ring/50 transition-shadow after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden dragging:ring-3"
+            />
+          </>
+        )}
+      </SliderTrack>
+    </AriaSlider>
   )
 }
 

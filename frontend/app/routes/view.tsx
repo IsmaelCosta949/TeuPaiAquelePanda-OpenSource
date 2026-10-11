@@ -6,7 +6,7 @@ import { PandaMascot } from "../components/images/PandaMascot";
 import { formatTime } from "../lib/format";
 import { useMail } from "../hooks/MailContext";
 import { buildPageMeta } from "../lib/seo";
-import { Button } from "../components/ui/button";
+import { buttonVariants } from "../components/ui/button";
 
 export function meta({ params }: Route.MetaArgs) {
   return buildPageMeta({
@@ -20,12 +20,14 @@ export function meta({ params }: Route.MetaArgs) {
 
 export default function ViewMessage() {
   const { id } = useParams();
-  const { getMessage, markRead } = useMail();
+  const { ready, getMessage, markRead } = useMail();
   const message = id ? getMessage(id) : undefined;
 
   useEffect(() => {
     if (message && !message.read) markRead(message.id);
   }, [message?.id]);
+
+  if (!ready) return null;
 
   if (!message) {
     return (
@@ -34,9 +36,9 @@ export default function ViewMessage() {
         <p className="text-panda-gray dark:text-white/50 text-sm">
           Esse e-mail não foi encontrado (ou já expirou).
         </p>
-        <Button asChild>
-          <Link to="/caixa-de-entrada">Voltar para a caixa de entrada</Link>
-        </Button>
+        <Link to="/caixa-de-entrada" className={buttonVariants()}>
+          Voltar para a caixa de entrada
+        </Link>
       </section>
     );
   }

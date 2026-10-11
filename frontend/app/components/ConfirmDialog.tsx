@@ -21,7 +21,7 @@ type ConfirmDialogProps = {
 export function ConfirmDialog({ ...props }: ConfirmDialogProps) {
   return (
     <Dialog
-      open={props.open}
+      isOpen={props.open}
       onOpenChange={(next) => !next && props.onCancel()}
     >
       <DialogContent showCloseButton={false}>
@@ -32,10 +32,10 @@ export function ConfirmDialog({ ...props }: ConfirmDialogProps) {
           )}
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={props.onCancel}>
+          <Button variant="outline" onPress={props.onCancel}>
             {props.cancelLabel}
           </Button>
-          <Button onClick={props.onConfirm}>{props.confirmLabel}</Button>
+          <Button onPress={props.onConfirm}>{props.confirmLabel}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

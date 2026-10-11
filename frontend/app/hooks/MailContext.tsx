@@ -24,6 +24,8 @@ const POLL_INTERVAL_MS = 10_000;
 const MIN_REFRESH_MS = 2000;
 
 type MailContextValue = {
+  /** false até o endereço salvo ser lido do localStorage (só no cliente). */
+  ready: boolean;
   address: string | null;
   messages: Message[];
   secondsLeft: number;
@@ -41,29 +43,32 @@ type MailContextValue = {
 const MailContext = createContext<MailContextValue | null>(null);
 
 export function MailProvider({ children }: { children: ReactNode }) {
-  const [address, setAddress] = useState<string | null>(
-    () => readStoredAddress()?.address ?? null,
-  );
-  const [messages, setMessages] = useState<Message[]>(() => {
-    const restored = readStoredAddress();
-    if (!restored) return [];
-    const readIds = readStoredReadIds(restored.address);
-    const welcome = welcomeMessage(restored.address);
-    return [{ ...welcome, read: readIds.has(welcome.id) }];
-  });
-  const [secondsLeft, setSecondsLeft] = useState(
-    () => readStoredAddress()?.secondsLeft ?? ADDRESS_LIFETIME_SECONDS,
-  );
+  // O estado começa vazio (igual ao HTML pré-renderizado, que não tem acesso ao
+  // localStorage) e o endereço salvo é restaurado num efeito, depois da
+  // hidratação. Ler o localStorage direto no useState causava mismatch de
+  // hidratação para quem já tinha um endereço ativo.
+  const [ready, setReady] = useState(false);
+  const [address, setAddress] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [secondsLeft, setSecondsLeft] = useState(ADDRESS_LIFETIME_SECONDS);
   const [copied, setCopied] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const copyTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const expiresAtRef = useRef<number | null>(
-    (() => {
-      const restored = readStoredAddress();
-      return restored ? Date.now() + restored.secondsLeft * 1000 : null;
-    })(),
-  );
+  const expiresAtRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const restored = readStoredAddress();
+    if (restored) {
+      const readIds = readStoredReadIds(restored.address);
+      const welcome = welcomeMessage(restored.address);
+      expiresAtRef.current = Date.now() + restored.secondsLeft * 1000;
+      setAddress(restored.address);
+      setMessages([{ ...welcome, read: readIds.has(welcome.id) }]);
+      setSecondsLeft(restored.secondsLeft);
+    }
+    setReady(true);
+  }, []);
 
   function activate(addr: string, withGreeting = true) {
     const expiresAt = Date.now() + ADDRESS_LIFETIME_SECONDS * 1000;
@@ -208,6 +213,7 @@ export function MailProvider({ children }: { children: ReactNode }) {
   return (
     <MailContext.Provider
       value={{
+        ready,
         address,
         messages,
         secondsLeft,
