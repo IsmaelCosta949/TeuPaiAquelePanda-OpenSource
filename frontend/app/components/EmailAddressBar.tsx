@@ -30,7 +30,7 @@ export function EmailAddressBar() {
   function confirmDeleteAddress() {
     setDeleteConfirmOpen(false);
     clearAddress();
-    navigate("/");
+    navigate("/email-temporario/");
   }
 
   return (
@@ -41,19 +41,19 @@ export function EmailAddressBar() {
         </code>
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <Button onClick={handleCopy}>
+        <Button onPress={handleCopy}>
           {copied ? "Copiado! ✓" : "Copiar endereço"}
         </Button>
         <Button
           variant="outline"
-          onClick={handleNewAddressClick}
+          onPress={handleNewAddressClick}
           className="rounded-full border-2 border-panda-ink bg-transparent text-panda-ink hover:bg-panda-cream dark:border-white/30 dark:text-panda-paper dark:hover:bg-white/10"
         >
           Novo endereço
         </Button>
         <Button
           variant="destructive"
-          onClick={() => setDeleteConfirmOpen(true)}
+          onPress={() => setDeleteConfirmOpen(true)}
           className="rounded-full"
         >
           Apagar e-mail

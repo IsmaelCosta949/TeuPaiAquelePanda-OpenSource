@@ -1,28 +1,43 @@
-import * as React from "react";
-import { cn } from "cn";
-import { Checkbox as CheckboxPrimitive } from "radix-ui";
+import {
+  Checkbox as AriaCheckbox,
+  composeRenderProps,
+  type CheckboxProps as AriaCheckboxProps,
+} from "react-aria-components";
 import { CheckIcon } from "lucide-react";
+import { cn } from "cn";
 
-function Checkbox({
-  className,
-  ...props
-}: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
+type CheckboxProps = Omit<AriaCheckboxProps, "className"> & {
+  className?: string;
+};
+
+function Checkbox({ className, children, ...props }: CheckboxProps) {
   return (
-    <CheckboxPrimitive.Root
+    <AriaCheckbox
       data-slot="checkbox"
-      className={cn(
-        "peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input transition-colors outline-none cursor-pointer group-has-disabled/field:opacity-50 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary",
-        className,
+      className={composeRenderProps(className, (className) =>
+        cn("group flex cursor-pointer items-center gap-2 disabled:cursor-not-allowed", className),
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator
-        data-slot="checkbox-indicator"
-        className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
-      >
-        <CheckIcon aria-hidden="true" />
-      </CheckboxPrimitive.Indicator>
-    </CheckboxPrimitive.Root>
+      {composeRenderProps(children, (children, { isSelected }) => (
+        <>
+          <div
+            data-slot="checkbox-box"
+            className={cn(
+              "relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input transition-colors outline-none dark:bg-input/30",
+              "group-focus-visible:border-ring group-focus-visible:ring-3 group-focus-visible:ring-ring/50",
+              "group-disabled:cursor-not-allowed group-disabled:opacity-50",
+              "group-invalid:border-destructive group-invalid:ring-3 group-invalid:ring-destructive/20",
+              isSelected &&
+                "border-primary bg-primary text-primary-foreground dark:bg-primary",
+            )}
+          >
+            {isSelected && <CheckIcon aria-hidden="true" className="size-3.5" />}
+          </div>
+          {children}
+        </>
+      ))}
+    </AriaCheckbox>
   );
 }
 

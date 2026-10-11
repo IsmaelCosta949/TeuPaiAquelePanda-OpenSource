@@ -67,7 +67,7 @@ export default function JwtDecoder() {
         className="rounded-lg border-panda-ink/15 bg-panda-cream px-4 py-3 font-mono text-sm break-all text-panda-ink focus-visible:border-panda-red/50 focus-visible:ring-0 dark:border-white/15 dark:bg-white/5 dark:text-panda-paper"
       />
 
-      <Button onClick={decode}>Decodificar</Button>
+      <Button onPress={decode}>Decodificar</Button>
 
       {error && (
         <p

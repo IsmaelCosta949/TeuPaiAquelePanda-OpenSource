@@ -28,7 +28,7 @@ export function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      onClick={toggle}
+      onPress={toggle}
       aria-label={dark ? "Ativar tema claro" : "Ativar tema escuro"}
       className="rounded-full text-panda-gray dark:text-white/50"
     >

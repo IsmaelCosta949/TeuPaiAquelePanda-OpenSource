@@ -40,7 +40,7 @@ export default function JsonFormatter() {
         className="rounded-lg border-panda-ink/15 bg-panda-cream px-4 py-3 font-mono text-sm text-panda-ink focus-visible:border-panda-red/50 focus-visible:ring-0 dark:border-white/15 dark:bg-white/5 dark:text-panda-paper"
       />
 
-      <Button onClick={format}>Formatar</Button>
+      <Button onPress={format}>Formatar</Button>
 
       {error && (
         <p
@@ -58,7 +58,7 @@ export default function JsonFormatter() {
             {output}
           </pre>
           <Button
-            onClick={handleCopy}
+            onPress={handleCopy}
             size="sm"
             className="absolute top-2 right-2 rounded-full"
           >

@@ -6,7 +6,7 @@ function randomDigit(): number {
   return Math.floor(Math.random() * 10);
 }
 
-function calcCheckDigit(digits: number[], weights: number[]): number {
+export function calcCheckDigit(digits: number[], weights: number[]): number {
   const sum = digits.reduce((acc, d, i) => acc + d * weights[i], 0);
   const remainder = sum % 11;
   return remainder < 2 ? 0 : 11 - remainder;

@@ -15,7 +15,7 @@ export function UpdateAnnouncementDialog({
   onClose: () => void;
 }) {
   return (
-    <Dialog open={props.open} onOpenChange={(next) => !next && props.onClose()}>
+    <Dialog isOpen={props.open} onOpenChange={(next) => !next && props.onClose()}>
       <DialogContent showCloseButton={false} className="max-w-md">
         <DialogHeader>
           <DialogTitle className="font-display text-lg">
@@ -28,7 +28,7 @@ export function UpdateAnnouncementDialog({
           ))}
         </ul>
         <DialogFooter>
-          <Button onClick={props.onClose}>Entendi!</Button>
+          <Button onPress={props.onClose}>Entendi!</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

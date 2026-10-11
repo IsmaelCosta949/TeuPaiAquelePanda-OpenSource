@@ -5,7 +5,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useHref,
+  useNavigate,
 } from "react-router";
+
+import { I18nProvider, RouterProvider } from "react-aria-components";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -15,16 +19,6 @@ export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/favicon.ico", sizes: "any" },
   { rel: "icon", type: "image/png", href: "/teupaiaquelepanda_logo_icon.png" },
   { rel: "apple-touch-icon", href: "/teupaiaquelepanda_logo_icon.png" },
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Fredoka:wght@500;600;700&display=swap",
-  },
 ];
 
 const THEME_SYNC_SCRIPT = `(function(){try{var s=localStorage.getItem("panda-mail-theme");document.documentElement.classList.toggle("dark",s!=="light");}catch(e){document.documentElement.classList.add("dark");}})();`;
@@ -35,6 +29,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="theme-color"
+          content="#faf9f6"
+          media="(prefers-color-scheme: light)"
+        />
+        <meta
+          name="theme-color"
+          content="#1a1a1d"
+          media="(prefers-color-scheme: dark)"
+        />
         <script dangerouslySetInnerHTML={{ __html: THEME_SYNC_SCRIPT }} />
         <Meta />
         <Links />
@@ -43,6 +47,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.VITE_ADSENSE_CLIENT_ID}`}
             crossOrigin="anonymous"
+          ></script>
+        )}
+        {import.meta.env.VITE_CF_ANALYTICS_TOKEN && (
+          <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={JSON.stringify({
+              token: import.meta.env.VITE_CF_ANALYTICS_TOKEN,
+            })}
           ></script>
         )}
       </head>
@@ -56,7 +69,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const navigate = useNavigate();
+
+  return (
+    <I18nProvider locale="pt-BR">
+      <RouterProvider navigate={navigate} useHref={useHref}>
+        <Outlet />
+      </RouterProvider>
+    </I18nProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
