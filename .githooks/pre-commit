@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Bloqueia commits que tentem subir valores privados de deploy:
+# URL do Worker, client id do AdSense, id do namespace KV e arquivos .env/.dev.vars.
+# Detecta por padrão (não guarda os valores reais aqui, já que o repo é público).
+# Para pular em caso de falso positivo: git commit --no-verify
+
+set -u
+
+falhou=0
+
+erro() {
+	echo "  ✗ $1" >&2
+	falhou=1
+}
+
+# 1. Arquivos que nunca devem ser commitados
+while IFS= read -r arquivo; do
+	case "$arquivo" in
+		*.env.example | *.dev.vars.example) ;;
+		.env | */.env | .env.* | */.env.* | .dev.vars | */.dev.vars | .dev.vars.* | */.dev.vars.* | .wrangler/* | */.wrangler/*)
+			erro "$arquivo: arquivo de variáveis/estado local não deve ser commitado" ;;
+	esac
+done < <(git diff --cached --name-only --diff-filter=ACMR)
+
+# 2. Valores sensíveis nas linhas adicionadas
+arquivo_atual=""
+while IFS= read -r linha; do
+	case "$linha" in
+		"+++ b/"*) arquivo_atual="${linha#+++ b/}"; continue ;;
+		"+++ "*) continue ;;
+		+*) conteudo="${linha#+}" ;;
+		*) continue ;;
+	esac
+
+	if [[ "$conteudo" =~ ca-pub-[0-9]{10,} ]]; then
+		erro "$arquivo_atual: client id do AdSense (${BASH_REMATCH[0]}) — use VITE_ADSENSE_CLIENT_ID no .env"
+	fi
+	if [[ "$conteudo" =~ [A-Za-z0-9-]+\.[A-Za-z0-9-]+\.workers\.dev ]]; then
+		erro "$arquivo_atual: URL de Worker (${BASH_REMATCH[0]}) — use VITE_API_BASE no .env"
+	fi
+	if [[ "$arquivo_atual" == *wrangler.json* && "$conteudo" =~ \"id\"[[:space:]]*:[[:space:]]*\"[0-9a-fA-F]{32}\" ]]; then
+		erro "$arquivo_atual: id real do namespace KV — mantenha o placeholder \"your-kv-namespace-id\""
+	fi
+done < <(git diff --cached -U0 --no-color --diff-filter=ACMR)
+
+if [ "$falhou" -ne 0 ]; then
+	echo "" >&2
+	echo "Commit bloqueado: variáveis privadas encontradas nas mudanças staged." >&2
+	echo "Remova-as do stage (git restore --staged <arquivo>) e tente de novo." >&2
+	exit 1
+fi
