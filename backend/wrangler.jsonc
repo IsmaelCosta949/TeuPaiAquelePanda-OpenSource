@@ -9,8 +9,9 @@
 	"upload_source_maps": true,
 	"kv_namespaces": [
 		{
-			"binding": "KV_NAME",
+			"binding": "EMAILS_TEMP",
 			"id": "your-kv-namespace-id",
 		},
 	],
 }
+ 
