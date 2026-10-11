@@ -32,8 +32,9 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-panda-ink/10 pt-4 text-center sm:text-left dark:border-white/10">
           <p>
-            🐼 Teu Pai, Aquele Panda — e-mails recebidos aqui expiram
-            automaticamente e depois somem para sempre.
+            🐼 Teu Pai, Aquele Panda — ferramentas grátis para devs e QAs, sem
+            cadastro. E-mails recebidos expiram automaticamente e somem para
+            sempre.
           </p>
           <div className="flex items-center gap-4">
             <Link to="/suporte" className={linkClass}>

@@ -5,7 +5,7 @@ export function meta({}: Route.MetaArgs) {
   return buildPageMeta({
     title: "Termos de uso — Teu Pai, Aquele Panda",
     description:
-      "Termos de uso do Teu Pai, Aquele Panda: como funciona o e-mail temporário, expiração automática e uso aceitável.",
+      "Termos de uso do Teu Pai, Aquele Panda: e-mail temporário, ferramentas online, expiração automática e uso aceitável.",
     path: "/termos/",
   });
 }
@@ -30,7 +30,11 @@ export default function Terms() {
           <p>
             Geramos endereços de e-mail temporários e descartáveis para você
             usar em cadastros, testes ou qualquer lugar que não mereça seu
-            e-mail de verdade.
+            e-mail de verdade. Também oferecemos ferramentas online, como
+            geradores e validadores de dados de teste, utilidades para
+            desenvolvimento e ferramentas de texto. As ferramentas rodam no
+            seu navegador: o que você digita nelas não é enviado nem
+            guardado por nós.
           </p>
         </div>
 
@@ -58,7 +62,19 @@ export default function Terms() {
 
         <div>
           <h2 className="font-display font-semibold text-panda-ink dark:text-panda-paper mb-1">
-            4. Sem garantias
+            4. Dados fictícios
+          </h2>
+          <p>
+            Os dados gerados pelas ferramentas (CPF, CNPJ, RG, pessoa, cartão
+            e similares) são fictícios e servem apenas para testes. É proibido
+            usá-los para fraude, cadastro falso ou para se passar por outra
+            pessoa ou empresa.
+          </p>
+        </div>
+
+        <div>
+          <h2 className="font-display font-semibold text-panda-ink dark:text-panda-paper mb-1">
+            5. Sem garantias
           </h2>
           <p>
             O serviço é oferecido "como está", sem garantia de entrega,
@@ -69,7 +85,7 @@ export default function Terms() {
 
         <div>
           <h2 className="font-display font-semibold text-panda-ink dark:text-panda-paper mb-1">
-            5. Mudanças nestes termos
+            6. Mudanças nestes termos
           </h2>
           <p>
             Podemos atualizar estes termos a qualquer momento. O uso
@@ -80,7 +96,7 @@ export default function Terms() {
 
         <div>
           <h2 className="font-display font-semibold text-panda-ink dark:text-panda-paper mb-1">
-            6. Contato
+            7. Contato
           </h2>
           <p>
             Dúvidas sobre estes termos? Manda um e-mail pra gente na{" "}
