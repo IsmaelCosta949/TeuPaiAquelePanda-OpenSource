@@ -49,7 +49,7 @@ export const TOOLS: Tool[] = [
     category: "email",
     seoTitle: "E-mail temporário — Teu Pai, Aquele Panda",
     seoDescription:
-      "Gere um e-mail temporário em segundos com a proteção de teu pai, aquele panda. Sem cadastro, sem spam guardado.",
+      "Gere um e-mail temporário em segundos com a proteção do teu pai, aquele panda. Sem cadastro, sem spam guardado.",
   },
   {
     slug: "gerador-de-cpf",

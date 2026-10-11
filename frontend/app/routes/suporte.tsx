@@ -5,7 +5,7 @@ export function meta({}: Route.MetaArgs) {
   return buildPageMeta({
     title: "Suporte — Teu Pai, Aquele Panda",
     description:
-      "Precisa de ajuda com seu e-mail temporário? Fale com a gente pelo suporte do Teu Pai, Aquele Panda.",
+      "Precisa de ajuda com o e-mail temporário ou com alguma ferramenta? Fale com a gente pelo suporte do Teu Pai, Aquele Panda.",
     path: "/suporte/",
   });
 }
