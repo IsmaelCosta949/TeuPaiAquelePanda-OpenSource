@@ -61,7 +61,7 @@ export default function EmailTemporario() {
     <section className="grid md:grid-cols-[1fr_auto] gap-8 items-center">
       <div className="space-y-5">
         <h1 className="font-display text-3xl sm:text-4xl font-bold text-panda-ink dark:text-panda-paper leading-tight">
-          E-mail temporário com a proteção de teu pai, aquele panda
+          E-mail temporário com a proteção do teu pai, aquele panda
         </h1>
         <p className="text-panda-gray dark:text-white/60 max-w-md">
           Gere um endereço descartável, use onde quiser e deixe o resto com ele.

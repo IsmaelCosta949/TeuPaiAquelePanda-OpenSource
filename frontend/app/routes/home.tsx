@@ -26,7 +26,7 @@ export default function Home() {
       <section className="grid md:grid-cols-[1fr_auto] gap-8 items-center">
         <div className="space-y-4">
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-panda-ink dark:text-panda-paper leading-tight">
-            A caixa de ferramentas de teu pai, aquele panda
+            A caixa de ferramentas do teu pai, aquele panda
           </h1>
           <p className="text-panda-gray dark:text-white/60 max-w-md">
             E-mail temporário, dados de teste, utilidades para devs e mais. Tudo
