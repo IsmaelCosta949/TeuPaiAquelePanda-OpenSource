@@ -14,6 +14,8 @@ export default [
     route("email/:id", "routes/view.tsx"),
     route("suporte", "routes/suporte.tsx"),
     route("termos", "routes/terms.tsx"),
+    route("sobre", "routes/sobre.tsx"),
+    route("privacidade", "routes/privacidade.tsx"),
   ]),
   route("sitemap.xml", "routes/sitemap.ts"),
   route("ads.txt", "routes/ads.ts"),

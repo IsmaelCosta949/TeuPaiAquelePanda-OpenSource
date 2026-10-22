@@ -35,6 +35,33 @@ export function ToolContent({ slug }: { slug: string }) {
         </ol>
       </section>
 
+      {content.sections.map((section, index) => (
+        <section
+          key={section.title}
+          aria-labelledby={`secao-${index}`}
+          className="space-y-2"
+        >
+          <h2
+            id={`secao-${index}`}
+            className="font-display text-lg font-bold text-panda-ink dark:text-panda-paper"
+          >
+            {section.title}
+          </h2>
+          <div className="space-y-2 text-sm text-panda-gray dark:text-white/60 max-w-2xl">
+            {section.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+            {section.list && (
+              <ul className="list-disc list-inside space-y-1">
+                {section.list.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+      ))}
+
       <section aria-labelledby="perguntas-frequentes" className="space-y-3">
         <h2
           id="perguntas-frequentes"

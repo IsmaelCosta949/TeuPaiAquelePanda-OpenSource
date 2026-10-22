@@ -9,8 +9,10 @@ const PAGES = [
     changefreq: "monthly",
     priority: "0.8",
   })),
+  { path: "/sobre/", changefreq: "yearly", priority: "0.5" },
   { path: "/suporte/", changefreq: "yearly", priority: "0.3" },
   { path: "/termos/", changefreq: "yearly", priority: "0.3" },
+  { path: "/privacidade/", changefreq: "yearly", priority: "0.3" },
 ];
 
 export function loader() {

@@ -1,11 +1,13 @@
-// Texto de apoio de cada ferramenta (explicação, passo a passo e perguntas
-// frequentes). Alimenta o bloco visível em cada página e o JSON-LD de FAQ, então
-// o que está aqui precisa continuar verdadeiro em relação ao código da ferramenta.
-// Chave = slug em lib/tools.ts.
+export type ToolSection = {
+  title: string;
+  paragraphs: string[];
+  list?: string[];
+};
 
 export type ToolContent = {
   about: string;
   steps: string[];
+  sections: ToolSection[];
   faq: { question: string; answer: string }[];
 };
 
@@ -23,6 +25,36 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Escolha um nome para o endereço ou clique em sortear um.",
       "Use o endereço no cadastro ou formulário que você precisar.",
       "Abra a caixa de entrada para ler as mensagens que chegarem.",
+    ],
+    sections: [
+      {
+        title: "Quando vale a pena usar um e-mail temporário",
+        paragraphs: [
+          "Muitos sites pedem um e-mail só para liberar um download, mostrar um preço, participar de um sorteio ou testar um aplicativo por alguns minutos. Entregar o seu endereço principal nesses casos costuma terminar em newsletter que você nunca pediu, listas de marketing vendidas para terceiros e, no pior caso, o seu e-mail aparecendo em vazamentos de dados.",
+          "Um endereço descartável resolve isso: você recebe o código de confirmação ou o link de ativação, faz o que precisava e deixa o endereço expirar. Nada fica ligado à sua identidade.",
+        ],
+        list: [
+          "Cadastros rápidos em sites e fóruns que você não pretende usar de novo.",
+          "Baixar materiais, cupons ou amostras que exigem e-mail.",
+          "Testar o fluxo de cadastro, confirmação e recuperação de senha do sistema que você está desenvolvendo.",
+          "Conferir como um e-mail transacional do seu produto chega na caixa de entrada.",
+          "Separar inscrições pontuais do seu e-mail pessoal ou de trabalho.",
+        ],
+      },
+      {
+        title: "Como o serviço funciona por dentro",
+        paragraphs: [
+          "Quando alguém envia uma mensagem para o seu endereço, ela passa pelo roteamento de e-mail da Cloudflare e é processada por um pequeno programa que separa remetente, assunto e corpo. A mensagem fica guardada em um armazenamento temporário com prazo de validade de 1 hora, e a página consulta esse armazenamento a cada 10 segundos para mostrar o que chegou.",
+          "Mensagens em HTML são limpas antes de aparecer na tela: scripts e elementos perigosos são removidos, e o conteúdo é exibido isolado do restante do site. Depois que o prazo acaba, os dados são apagados automaticamente pela própria infraestrutura, sem cópia de segurança.",
+        ],
+      },
+      {
+        title: "Cuidados importantes",
+        paragraphs: [
+          "Um e-mail temporário é ótimo para o que é descartável, e ruim para o que é importante. Como não há senha, qualquer pessoa que digite o mesmo endereço consegue ver as mensagens que chegarem nele. Por isso, prefira os endereços sorteados, que são mais difíceis de adivinhar, e nunca use o serviço para banco, governo, trabalho ou qualquer conta que você precise recuperar no futuro.",
+          "Também não é possível responder nem enviar mensagens: o serviço só recebe. E alguns sites bloqueiam domínios de e-mail temporário; nesse caso, o cadastro simplesmente não vai aceitar o endereço.",
+        ],
+      },
     ],
     faq: [
       {
@@ -53,6 +85,41 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Marque ou desmarque “Formatado” para incluir ou não pontos e traço.",
       "Clique no número para copiá-lo.",
     ],
+    sections: [
+      {
+        title: "Como um CPF é formado",
+        paragraphs: [
+          "O CPF (Cadastro de Pessoas Físicas) é escrito no formato 000.000.000-00. Os oito primeiros dígitos formam o número-base, o nono indica a região fiscal onde o documento foi emitido e os dois últimos são os dígitos verificadores, que servem para detectar erros de digitação.",
+          "A região fiscal é um detalhe pouco conhecido, mas útil para entender os números:",
+        ],
+        list: [
+          "1: DF, GO, MS, MT e TO",
+          "2: AC, AM, AP, PA, RO e RR",
+          "3: CE, MA e PI",
+          "4: AL, PB, PE e RN",
+          "5: BA e SE",
+          "6: MG",
+          "7: ES e RJ",
+          "8: SP",
+          "9: PR e SC",
+          "0: RS",
+        ],
+      },
+      {
+        title: "O cálculo dos dígitos verificadores, passo a passo",
+        paragraphs: [
+          "Para o primeiro verificador, multiplique os nove primeiros dígitos pelos pesos 10, 9, 8, 7, 6, 5, 4, 3 e 2, nessa ordem, e some os resultados. Divida a soma por 11 e pegue o resto: se o resto for 0 ou 1, o dígito é 0; caso contrário, é 11 menos o resto.",
+          "O segundo verificador repete a conta com os dez primeiros dígitos (agora incluindo o primeiro verificador) e os pesos de 11 a 2. É exatamente esse algoritmo que este gerador usa, e é o mesmo que a maioria dos formulários aplica para aceitar ou recusar um CPF.",
+        ],
+      },
+      {
+        title: "Por que usar CPF gerado em testes",
+        paragraphs: [
+          "Usar o CPF de uma pessoa real em ambiente de desenvolvimento é um risco: ele pode acabar em logs, prints de bug, bancos de homologação e planilhas compartilhadas, o que vai contra a LGPD. Um número gerado passa na validação do formulário sem expor ninguém.",
+          "Para testes mais completos, vale gerar também casos inválidos de propósito, como trocar o último dígito ou usar uma sequência repetida, e confirmar que o sistema recusa esses valores. O validador de CPF e CNPJ deste site ajuda a conferir os dois lados.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "O CPF gerado pertence a uma pessoa real?",
@@ -75,6 +142,29 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Marque ou desmarque “Formatado” para incluir ou não pontos, barra e traço.",
       "Clique no número para copiá-lo.",
     ],
+    sections: [
+      {
+        title: "Entendendo as partes do CNPJ",
+        paragraphs: [
+          "O CNPJ (Cadastro Nacional da Pessoa Jurídica) é escrito como 00.000.000/0000-00. Os oito primeiros dígitos são a raiz e identificam a empresa. Os quatro seguintes, depois da barra, identificam o estabelecimento: 0001 costuma ser a matriz, e 0002, 0003 e assim por diante são filiais. Os dois últimos são os dígitos verificadores.",
+          "Isso significa que todas as filiais de uma empresa compartilham a mesma raiz. Em sistemas que agrupam dados por empresa, comparar só os oito primeiros dígitos é uma prática comum.",
+        ],
+      },
+      {
+        title: "Como os verificadores são calculados",
+        paragraphs: [
+          "O cálculo também usa módulo 11, mas com pesos diferentes dos do CPF. Para o primeiro verificador, os doze primeiros dígitos são multiplicados por 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3 e 2. A soma é dividida por 11: se o resto for 0 ou 1, o dígito é 0; senão, é 11 menos o resto.",
+          "O segundo verificador usa os treze primeiros dígitos e os pesos 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3 e 2. Um erro comum em implementações caseiras é reaproveitar os pesos do CPF, o que faz o sistema recusar CNPJs verdadeiros.",
+        ],
+      },
+      {
+        title: "E o CNPJ alfanumérico?",
+        paragraphs: [
+          "A Receita Federal definiu que novas inscrições passam a receber CNPJs com letras e números nas doze primeiras posições, mantendo os dois verificadores numéricos. Os CNPJs já existentes continuam iguais.",
+          "Este gerador e o validador do site trabalham com o formato só de números, que ainda é o da imensa maioria das empresas. Se o seu sistema guarda CNPJ como número inteiro ou usa máscara só de dígitos, vale planejar a mudança para texto.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "O CNPJ gerado é de uma empresa real?",
@@ -92,6 +182,31 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Marque ou desmarque “Formatado” para incluir ou não pontos e traço.",
       "Clique no número para copiá-lo.",
     ],
+    sections: [
+      {
+        title: "Por que o RG é diferente do CPF",
+        paragraphs: [
+          "O CPF é emitido por um único órgão, a Receita Federal, com uma regra nacional. O RG tradicional, por outro lado, sempre foi emitido pelas secretarias de segurança de cada estado. Cada uma tem a sua numeração, a sua quantidade de dígitos e, em alguns casos, nenhum dígito verificador. Por isso não existe uma validação de RG que funcione para o Brasil inteiro.",
+          "Na prática, muitos sistemas aceitam o RG como texto livre, ou validam apenas o formato de São Paulo, que é o mais difundido. É esse modelo que o gerador segue: oito dígitos mais um verificador, que pode ser um número ou a letra X.",
+        ],
+      },
+      {
+        title: "A nova Carteira de Identidade Nacional",
+        paragraphs: [
+          "Desde 2022 os estados vêm substituindo o RG pela Carteira de Identidade Nacional (CIN), que usa o próprio número do CPF como identificador único. Com isso, a tendência é que o número do RG perca importância em cadastros novos.",
+          "Mesmo assim, milhões de pessoas ainda usam o RG antigo, e muitos formulários continuam pedindo esse campo. Testar com um número gerado ajuda a conferir máscaras, tamanho máximo do campo e o tratamento do “X” no final.",
+        ],
+      },
+      {
+        title: "Dicas para testar campos de RG",
+        paragraphs: [],
+        list: [
+          "Confirme que o campo aceita a letra X no último dígito; muitos formulários bloqueiam letras e recusam RGs reais.",
+          "Teste o número com e sem pontos e traço para ver se o sistema normaliza o valor antes de salvar.",
+          "Se o sistema atende vários estados, evite exigir o formato paulista para todo mundo.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "Esse RG vale para todos os estados?",
@@ -107,6 +222,32 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
     steps: [
       "Digite ou cole o CPF ou CNPJ, com ou sem formatação.",
       "Veja na hora se os dígitos verificadores estão corretos.",
+    ],
+    sections: [
+      {
+        title: "O que a validação confere de verdade",
+        paragraphs: [
+          "Os dígitos verificadores existem para pegar erros de digitação: um número trocado ou dois dígitos invertidos quase sempre fazem a conta falhar. Quando o validador diz que um documento é válido, ele está dizendo que o número é matematicamente consistente, ou seja, que não houve erro de digitação.",
+          "O que ele não diz é se o documento foi emitido, se está ativo ou a quem pertence. Para isso só uma consulta aos sistemas da Receita Federal, que exigem dados adicionais e autorização. Essa é a mesma limitação de qualquer validação feita em formulário.",
+        ],
+      },
+      {
+        title: "Quando usar o validador",
+        paragraphs: [],
+        list: [
+          "Conferir rapidamente se você digitou um documento certo antes de enviar um cadastro.",
+          "Descobrir se um CPF ou CNPJ de uma planilha ou base de dados está corrompido.",
+          "Comparar com o resultado da validação do seu próprio sistema durante um teste ou investigação de bug.",
+          "Verificar se um número gerado para teste está realmente com os verificadores corretos.",
+        ],
+      },
+      {
+        title: "Erros comuns ao validar CPF e CNPJ em sistemas",
+        paragraphs: [
+          "Guardar o documento como número inteiro faz zeros à esquerda desaparecerem: o CPF 012.345.678-90 vira 12345678090, com 10 dígitos, e passa a ser recusado. Guarde sempre como texto. Outro erro frequente é não remover a formatação antes da conta, ou removê-la de forma incompleta, deixando espaços ou barras no meio.",
+          "Também vale lembrar das sequências repetidas, como 000.000.000-00, que passam na conta mas nunca são emitidas, e de deixar o sistema preparado para o CNPJ alfanumérico, que este validador ainda não cobre.",
+        ],
+      },
     ],
     faq: [
       {
@@ -132,6 +273,32 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Clique em “Gerar outra” para criar uma nova pessoa.",
       "Clique em qualquer campo para copiar só aquele valor.",
     ],
+    sections: [
+      {
+        title: "Para que serve uma pessoa fictícia",
+        paragraphs: [
+          "Preencher um formulário de cadastro manualmente dezenas de vezes durante um teste é cansativo, e usar sempre os mesmos dados (“Teste da Silva”, “123”) esconde bugs. Uma pessoa gerada traz nomes com acentos, endereços de cidades diferentes e telefones com DDDs variados, o que aproxima o teste da vida real.",
+          "Os dados também são úteis para montar protótipos e telas de demonstração com aparência realista, sem expor clientes de verdade em apresentações ou capturas de tela.",
+        ],
+      },
+      {
+        title: "Dados de teste e a LGPD",
+        paragraphs: [
+          "A Lei Geral de Proteção de Dados vale também para ambientes de desenvolvimento e homologação. Copiar a base de produção para testar, ou usar os dados de um colega, significa espalhar informação pessoal por lugares com menos proteção e mais gente com acesso.",
+          "Gerar dados fictícios é a forma mais simples de evitar esse risco. O e-mail usa o domínio example.com, reservado justamente para exemplos, então nenhuma mensagem enviada por engano durante um teste chega a uma pessoa real.",
+        ],
+      },
+      {
+        title: "Ideias de testes com os dados gerados",
+        paragraphs: [],
+        list: [
+          "Nomes longos e com acentos: o campo corta o texto ou quebra o layout?",
+          "Endereços de estados diferentes: os combos de UF e cidade carregam corretamente?",
+          "Telefones com DDDs variados: a máscara aceita celular com nove dígitos?",
+          "Datas de nascimento: o sistema calcula a idade e respeita a idade mínima exigida?",
+        ],
+      },
+    ],
     faq: [
       {
         question: "Os dados são de pessoas reais?",
@@ -153,6 +320,38 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Escolha a bandeira.",
       "Clique em “Gerar outro” para criar novos dados.",
       "Clique em número, validade ou CVV para copiar.",
+    ],
+    sections: [
+      {
+        title: "Como identificar a bandeira pelo número",
+        paragraphs: [
+          "Os primeiros dígitos de um cartão formam o IIN (Issuer Identification Number), que indica a bandeira e o emissor. É assim que um formulário consegue mostrar o logotipo certo enquanto você digita. Os prefixos usados neste gerador são:",
+        ],
+        list: [
+          "Visa: começa com 4 e tem 16 dígitos.",
+          "Mastercard: começa com 51 a 55 e tem 16 dígitos.",
+          "American Express: começa com 34 ou 37, tem 15 dígitos e CVV de 4 dígitos.",
+          "Elo: usa faixas próprias, como 636368, 504175 e 438935, com 16 dígitos.",
+        ],
+      },
+      {
+        title: "O algoritmo de Luhn na prática",
+        paragraphs: [
+          "Pegue o número 4539 1488 0343 6467. Começando pelo último dígito e indo para a esquerda, mantenha o primeiro, dobre o segundo, mantenha o terceiro, dobre o quarto, e assim por diante. Quando o dobro passar de 9, subtraia 9 (8 × 2 = 16, que vira 7). Some todos os resultados: se o total terminar em zero, o número é válido.",
+          "O algoritmo foi criado em 1954 por Hans Peter Luhn, da IBM, e não tem nada de segredo ou segurança. Ele só detecta erros de digitação, como um dígito errado ou dois dígitos vizinhos trocados. Por isso um número que passa no Luhn não é, de jeito nenhum, um cartão que funciona.",
+        ],
+      },
+      {
+        title: "O que testar em um formulário de pagamento",
+        paragraphs: [],
+        list: [
+          "A máscara agrupa os dígitos certo para cada bandeira (o Amex usa 4-6-5).",
+          "O campo de CVV aceita 4 dígitos quando a bandeira é Amex.",
+          "A validade recusa datas passadas e meses inválidos.",
+          "O número digitado errado é recusado antes de chegar ao gateway.",
+          "Nenhum número de cartão aparece em logs, mesmo os de teste: é um bom hábito para quando os dados forem reais.",
+        ],
+      },
     ],
     faq: [
       {
@@ -180,6 +379,32 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Marque os tipos de caracteres: minúsculas, maiúsculas, números e símbolos.",
       "Clique em “Gerar nova” e depois na senha para copiá-la.",
     ],
+    sections: [
+      {
+        title: "O que torna uma senha forte",
+        paragraphs: [
+          "A força de uma senha vem principalmente de dois fatores: o tamanho e a variedade de caracteres possíveis em cada posição. Com só letras minúsculas, cada caractere tem 26 opções. Somando maiúsculas, números e os 18 símbolos deste gerador, passam a ser 80 opções por caractere.",
+          "Isso cresce muito rápido. Uma senha de 8 caracteres com os quatro tipos tem cerca de 50 bits de entropia, algo que um computador dedicado pode quebrar por força bruta. Com 16 caracteres, passa de 100 bits, um número de combinações tão grande que tentar todas é inviável.",
+        ],
+      },
+      {
+        title: "Aleatoriedade de verdade importa",
+        paragraphs: [
+          "Senhas que parecem complicadas, como “P@nda2024!”, seguem padrões que qualquer ferramenta de quebra de senha conhece: palavra comum, letra trocada por símbolo, ano no final. Elas caem muito antes do que o tamanho sugere.",
+          "Este gerador usa crypto.getRandomValues, a fonte de números aleatórios criptográficos do navegador, que é a mesma usada para gerar chaves de segurança. Não há padrão para adivinhar.",
+        ],
+      },
+      {
+        title: "Boas práticas para guardar e usar senhas",
+        paragraphs: [],
+        list: [
+          "Use uma senha diferente para cada serviço. Quando um site vaza, as outras contas continuam seguras.",
+          "Guarde as senhas em um gerenciador de senhas, em vez de em papéis, planilhas ou no bloco de notas.",
+          "Ative a verificação em duas etapas sempre que o serviço oferecer.",
+          "Troque a senha imediatamente se o serviço avisar que houve um vazamento.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "Qual o tamanho ideal para uma senha?",
@@ -206,6 +431,29 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Clique em “Formatar”.",
       "Copie o resultado ou leia a mensagem de erro, se houver.",
     ],
+    sections: [
+      {
+        title: "O que é JSON",
+        paragraphs: [
+          "JSON (JavaScript Object Notation) é o formato de texto mais usado para trocar dados entre sistemas, principalmente em APIs web. Apesar do nome, ele é independente de linguagem e é lido e escrito por praticamente qualquer uma, de Python a Java.",
+          "O formato aceita poucos tipos de valor: textos entre aspas duplas, números, true, false, null, listas entre colchetes e objetos entre chaves, com pares de chave e valor. Essa simplicidade é justamente o que o torna tão popular, mas também o motivo de pequenos deslizes quebrarem o arquivo inteiro.",
+        ],
+      },
+      {
+        title: "Exemplo de JSON válido",
+        paragraphs: [
+          "{\"nome\": \"Panda\", \"idade\": 7, \"ativo\": true, \"tags\": [\"bambu\", \"soneca\"], \"endereco\": null}",
+          "Repare que todas as chaves estão entre aspas duplas, que não há vírgula depois do último item e que true e null aparecem sem aspas, pois são valores do próprio formato e não textos.",
+        ],
+      },
+      {
+        title: "Quando formatar ajuda",
+        paragraphs: [
+          "Respostas de API e arquivos de log costumam vir minificados, tudo em uma linha, para economizar espaço. Formatar o texto com indentação torna a estrutura visível: fica fácil ver o que está dentro de cada objeto, encontrar um campo específico e comparar duas respostas.",
+          "Também é uma forma rápida de validar um arquivo de configuração antes de subir uma alteração: se o formatador acusar erro, a aplicação também vai acusar.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "Por que meu JSON dá erro?",
@@ -225,6 +473,36 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Cole o token JWT completo na caixa de texto.",
       "Clique em “Decodificar”.",
       "Confira o header, o payload e se o token já expirou.",
+    ],
+    sections: [
+      {
+        title: "As três partes de um JWT",
+        paragraphs: [
+          "O header diz qual algoritmo foi usado para assinar o token, como HS256 ou RS256, e o tipo do token. O payload carrega as informações, chamadas de claims: quem é o usuário, quais permissões ele tem e até quando o token vale. A assinatura é calculada a partir das duas primeiras partes com uma chave secreta, e é ela que garante que ninguém alterou o conteúdo.",
+          "Por isso, decodificar um token é diferente de validá-lo. Qualquer pessoa consegue ler o header e o payload, mas só quem tem a chave consegue gerar uma assinatura que o servidor aceite.",
+        ],
+      },
+      {
+        title: "Claims mais comuns",
+        paragraphs: [
+          "O padrão JWT (RFC 7519) define alguns nomes curtos que aparecem em quase todo token:",
+        ],
+        list: [
+          "sub: o identificador do usuário ou do assunto do token.",
+          "iss: quem emitiu o token, por exemplo o servidor de autenticação.",
+          "aud: para quem o token foi emitido, como uma API específica.",
+          "exp: a data de expiração, em timestamp Unix (segundos).",
+          "iat: quando o token foi emitido.",
+          "nbf: a partir de quando o token passa a valer.",
+        ],
+      },
+      {
+        title: "Usando o decodificador para depurar",
+        paragraphs: [
+          "Os problemas de autenticação mais comuns aparecem logo no payload: token expirado, audience errada, permissão faltando ou relógio do servidor fora de sincronia com o emissor. Colar o token aqui mostra essas informações na hora.",
+          "Um cuidado: tokens de produção dão acesso à conta de alguém enquanto não expiram. Evite colá-los em ferramentas que enviam o conteúdo para servidores. Aqui a decodificação acontece só no seu navegador, mas o hábito de tratar tokens como senhas vale para qualquer lugar.",
+        ],
+      },
     ],
     faq: [
       {
@@ -251,6 +529,32 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Clique em “Gerar novos”.",
       "Clique em um UUID para copiá-lo.",
     ],
+    sections: [
+      {
+        title: "Anatomia de um UUID",
+        paragraphs: [
+          "Um UUID tem 32 caracteres hexadecimais divididos em cinco grupos, no formato 8-4-4-4-12, por exemplo 3f2b8c1e-9d4a-4e7b-a6c2-1f0e5d9b7a34. O primeiro caractere do terceiro grupo indica a versão (4, no caso) e o primeiro do quarto grupo indica a variante. Os outros 122 bits são aleatórios.",
+          "O formato é definido pela RFC 9562, que em 2024 substituiu a antiga RFC 4122 e também padronizou versões mais novas, como a v7.",
+        ],
+      },
+      {
+        title: "UUID v4 ou ID sequencial?",
+        paragraphs: [
+          "IDs sequenciais (1, 2, 3…) são curtos e ordenados, mas revelam informação, como quantos clientes um sistema tem, e permitem adivinhar o próximo registro. Também exigem que um único lugar distribua os números, o que complica sistemas distribuídos e aplicativos que funcionam offline.",
+          "O UUID v4 pode ser gerado em qualquer lugar, sem coordenação, e não revela nada. A desvantagem é que ele é aleatório, o que pode deixar índices de banco de dados menos eficientes em tabelas muito grandes. Nesses casos, a versão 7, que começa com a data e hora, é uma alternativa que mantém a ordenação.",
+        ],
+      },
+      {
+        title: "Onde UUIDs costumam aparecer",
+        paragraphs: [],
+        list: [
+          "Chaves primárias em bancos de dados.",
+          "Identificadores de pedidos, arquivos e recursos em APIs REST.",
+          "Chaves de idempotência para evitar que uma requisição seja processada duas vezes.",
+          "IDs de correlação para rastrear uma requisição entre vários serviços nos logs.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "Dois UUIDs v4 podem ser iguais?",
@@ -272,6 +576,33 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Clique em “Codificar” ou “Decodificar”.",
       "Clique no resultado para copiá-lo.",
     ],
+    sections: [
+      {
+        title: "Como a codificação funciona",
+        paragraphs: [
+          "O Base64 pega os dados de três em três bytes (24 bits) e os divide em quatro blocos de 6 bits. Cada bloco vira um dos 64 caracteres do alfabeto: A a Z, a a z, 0 a 9, + e /. Quando a quantidade de bytes não é múltipla de três, o final recebe um ou dois sinais de igual (=) como preenchimento.",
+          "O resultado é cerca de 33% maior que o original: a cada três bytes de entrada saem quatro caracteres. É o preço pago para que o conteúdo passe por canais que só aceitam texto.",
+        ],
+      },
+      {
+        title: "Onde o Base64 é usado",
+        paragraphs: [],
+        list: [
+          "Anexos de e-mail, que são codificados para viajar dentro de uma mensagem de texto.",
+          "Imagens embutidas em HTML e CSS com data URIs (data:image/png;base64,…).",
+          "Autenticação HTTP Basic, que envia usuário e senha em Base64 no cabeçalho.",
+          "Tokens JWT, que usam a variante Base64URL.",
+          "Arquivos e binários enviados dentro de JSON em APIs.",
+        ],
+      },
+      {
+        title: "Base64 e Base64URL",
+        paragraphs: [
+          "Os caracteres + e / têm significado especial em URLs, e o = também. Por isso existe a variante Base64URL, que troca + por -, / por _ e geralmente omite o preenchimento. É ela que aparece em JWTs e em parâmetros de links.",
+          "Se a decodificação de um texto que veio de uma URL falhar, vale conferir se ele não está em Base64URL: trocar - por + e _ por / costuma resolver.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "Base64 é criptografia?",
@@ -292,6 +623,29 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Cole o timestamp ou clique em “Agora”.",
       "Ou escolha uma data e hora no seletor.",
       "Copie o formato que precisar: segundos, milissegundos, ISO 8601, UTC ou horário local.",
+    ],
+    sections: [
+      {
+        title: "Por que sistemas usam timestamp",
+        paragraphs: [
+          "Guardar datas como texto (“19/10/2026 14:30”) gera ambiguidade: em qual fuso? Dia/mês ou mês/dia? O timestamp Unix resolve isso com um único número que representa o mesmo instante em qualquer lugar do mundo. Comparar, ordenar e calcular a diferença entre duas datas vira uma conta simples de subtração.",
+          "Por isso ele aparece em bancos de dados, logs, tokens JWT, APIs e sistemas de arquivos. A conversão para o horário local só acontece na hora de mostrar a data para uma pessoa.",
+        ],
+      },
+      {
+        title: "Segundos ou milissegundos: diferenças entre linguagens",
+        paragraphs: [
+          "O padrão Unix conta em segundos, e é assim que funcionam PHP, Python (time.time()), a maioria dos bancos de dados e os JWTs. Já o JavaScript e o Java contam em milissegundos: Date.now() devolve um número com 13 dígitos em vez de 10.",
+          "Misturar os dois é um dos bugs de data mais comuns: um timestamp em segundos interpretado como milissegundos vira uma data em janeiro de 1970, e o contrário vira uma data dezenas de milhares de anos no futuro.",
+        ],
+      },
+      {
+        title: "O problema do ano 2038",
+        paragraphs: [
+          "Sistemas antigos guardam o timestamp em um inteiro de 32 bits com sinal, que tem como valor máximo 2.147.483.647. Esse número corresponde a 19 de janeiro de 2038, às 03:14:07 UTC. Um segundo depois, o contador estoura e volta para uma data em 1901.",
+          "Sistemas modernos já usam 64 bits e não têm esse problema, mas equipamentos embarcados, bancos de dados legados e arquivos com campos de 32 bits ainda precisam ser revisados até lá.",
+        ],
+      },
     ],
     faq: [
       {
@@ -319,6 +673,33 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Os quatro hashes são atualizados na hora.",
       "Clique em um hash para copiá-lo.",
     ],
+    sections: [
+      {
+        title: "Diferenças entre os algoritmos",
+        paragraphs: [
+          "Todos os algoritmos aqui geram um resultado de tamanho fixo, não importa se a entrada tem uma palavra ou um livro inteiro. O que muda é o tamanho e a resistência:",
+        ],
+        list: [
+          "SHA-1: 160 bits (40 caracteres hexadecimais). Considerado quebrado desde 2017, quando pesquisadores criaram dois PDFs diferentes com o mesmo hash.",
+          "SHA-256: 256 bits (64 caracteres). O mais usado hoje, em certificados digitais, assinaturas de software e blockchains.",
+          "SHA-384: 384 bits (96 caracteres). Uma versão truncada do SHA-512, comum em alguns protocolos de segurança.",
+          "SHA-512: 512 bits (128 caracteres). Margem de segurança maior e, em processadores de 64 bits, às vezes até mais rápido que o SHA-256.",
+        ],
+      },
+      {
+        title: "Para que serve um hash",
+        paragraphs: [
+          "O uso mais comum é verificar integridade. Sites de download publicam o SHA-256 dos arquivos: se o hash do arquivo que você baixou for igual ao publicado, ele chegou intacto e não foi alterado. Sistemas de controle de versão, como o Git, usam hashes para identificar cada alteração.",
+          "Hashes também servem para comparar dados sem precisar guardá-los, criar chaves de cache, detectar arquivos duplicados e como parte de assinaturas digitais e de códigos de autenticação de mensagens (HMAC).",
+        ],
+      },
+      {
+        title: "O efeito avalanche",
+        paragraphs: [
+          "Uma propriedade importante de um bom hash é que uma mudança mínima na entrada muda completamente a saída. Experimente digitar “panda” e depois “Panda”: os resultados não terão nenhuma semelhança visível. Isso impede que alguém deduza o texto original comparando hashes parecidos.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "É possível reverter um hash para o texto original?",
@@ -345,6 +726,33 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Ajuste o tamanho da imagem.",
       "Clique em “Baixar PNG”.",
     ],
+    sections: [
+      {
+        title: "Um pouco de história",
+        paragraphs: [
+          "O QR Code (Quick Response Code) foi criado em 1994 pela Denso Wave, uma empresa japonesa do grupo Toyota, para rastrear peças nas linhas de montagem de carros. A ideia era um código que pudesse ser lido muito mais rápido que o código de barras e guardasse bem mais informação.",
+          "A empresa decidiu não cobrar pelo uso da patente, e o formato se espalhou. Hoje está em cardápios, ingressos, boletos, embalagens e no Pix, onde virou parte do dia a dia de quase todo brasileiro.",
+        ],
+      },
+      {
+        title: "Correção de erros: por que um QR Code riscado ainda funciona",
+        paragraphs: [
+          "Parte dos quadradinhos de um QR Code não guarda o conteúdo, e sim informação redundante para reconstruí-lo. Existem quatro níveis: L recupera cerca de 7% do código danificado, M cerca de 15%, Q cerca de 25% e H cerca de 30%. Este gerador usa o nível M, um bom equilíbrio entre resistência e densidade.",
+          "É graças a essa redundância que um código continua legível mesmo com uma mancha, um amassado ou um pequeno logotipo por cima.",
+        ],
+      },
+      {
+        title: "Dicas para um QR Code fácil de ler",
+        paragraphs: [],
+        list: [
+          "Prefira URLs curtas: menos conteúdo gera um código com menos quadradinhos, que é lido mais rápido e de mais longe.",
+          "Mantenha a margem branca em volta do código; ela ajuda a câmera a encontrar onde ele começa.",
+          "Para impressão, use um tamanho de pelo menos 2 cm de lado e teste com mais de um celular antes de imprimir em quantidade.",
+          "Garanta bom contraste: código escuro sobre fundo claro funciona melhor.",
+          "Confira o link antes de divulgar. Como o QR Code é estático, corrigir depois exige gerar e imprimir um novo.",
+        ],
+      },
+    ],
     faq: [
       {
         question: "O QR Code expira?",
@@ -364,6 +772,34 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
     steps: [
       "Digite ou cole o texto.",
       "Os números são atualizados enquanto você digita.",
+    ],
+    sections: [
+      {
+        title: "Limites de caracteres que vale conhecer",
+        paragraphs: [
+          "Muitos lugares cortam o texto quando ele passa de um certo tamanho. Alguns limites de referência:",
+        ],
+        list: [
+          "Título de página para o Google: cerca de 50 a 60 caracteres aparecem inteiros no resultado de busca.",
+          "Meta description: em torno de 150 a 160 caracteres antes de ser cortada.",
+          "Post no X (antigo Twitter): 280 caracteres em contas gratuitas.",
+          "SMS: 160 caracteres sem acentos; com acentos ou emojis, o limite por mensagem cai para 70.",
+          "Bio do Instagram: 150 caracteres.",
+        ],
+      },
+      {
+        title: "Com ou sem espaços?",
+        paragraphs: [
+          "Plataformas e editais nem sempre contam da mesma forma. Redes sociais e campos de formulário geralmente contam os espaços. Já trabalhos acadêmicos, traduções e alguns concursos pedem a contagem sem espaços. Por isso a ferramenta mostra os dois números lado a lado.",
+          "Na dúvida, leia a regra de quem definiu o limite. Se ela não disser nada, considere a contagem com espaços, que é a mais comum.",
+        ],
+      },
+      {
+        title: "Tempo de leitura",
+        paragraphs: [
+          "A estimativa usa uma média de 200 palavras por minuto, um ritmo confortável para leitura em tela. Pessoas que leem muito chegam a 250 ou 300, e textos técnicos costumam ser lidos mais devagar. Use o número como referência, não como regra, por exemplo para avisar quanto tempo leva um artigo ou para calcular a duração de um discurso.",
+        ],
+      },
     ],
     faq: [
       {
@@ -385,6 +821,30 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       "Escolha entre parágrafos, frases ou palavras.",
       "Ajuste a quantidade.",
       "Clique em “Copiar”.",
+    ],
+    sections: [
+      {
+        title: "A história do texto mais famoso do design",
+        paragraphs: [
+          "O Lorem Ipsum vem de trechos das seções 1.10.32 e 1.10.33 de “De finibus bonorum et malorum”, um tratado sobre ética escrito por Cícero. O texto original foi cortado e embaralhado, e a palavra “dolorem” virou “lorem”, o que fez o resultado perder o sentido.",
+          "Ele já era usado por tipógrafos para montar provas de impressão, mas ficou popular nos anos 1960 com as folhas de letras transferíveis da Letraset e, depois, nos anos 1980, quando passou a vir em programas de editoração eletrônica. Desde então é padrão em design gráfico e web.",
+        ],
+      },
+      {
+        title: "Por que não usar “texto texto texto”",
+        paragraphs: [
+          "Repetir a mesma palavra cria um padrão visual artificial, com espaços e quebras de linha sempre iguais. O Lorem Ipsum tem palavras de tamanhos variados e uma distribuição de letras parecida com a de um texto real em línguas latinas, o que dá uma ideia mais fiel de como o layout vai ficar.",
+        ],
+      },
+      {
+        title: "Cuidados ao usar texto de preenchimento",
+        paragraphs: [],
+        list: [
+          "Teste também com textos reais e longos: títulos em português costumam ser maiores que os de exemplo.",
+          "Revise antes de publicar. Lorem Ipsum esquecido em produção é um erro clássico e fácil de evitar.",
+          "Para validar a experiência com usuários, prefira conteúdo real; texto sem sentido só serve para avaliar forma.",
+        ],
+      },
     ],
     faq: [
       {

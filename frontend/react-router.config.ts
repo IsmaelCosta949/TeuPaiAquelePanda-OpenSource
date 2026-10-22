@@ -8,6 +8,8 @@ export default {
       "/",
       "/suporte",
       "/termos",
+      "/sobre",
+      "/privacidade",
       "/sitemap.xml",
       "/ads.txt",
       ...TOOLS.map((tool) => `/${tool.slug}`),
