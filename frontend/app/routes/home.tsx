@@ -26,7 +26,7 @@ export default function Home() {
     <div className="space-y-10">
       <section className="grid md:grid-cols-[1fr_auto] gap-8 items-center">
         <div className="space-y-4">
-          <h1 className="font-display text-3xl sm:text-4xl font-bold text-panda-ink dark:text-panda-paper leading-tight">
+          <h1 className="font-display text-3xl sm:text-4xl font-bold text-panda-ink dark:text-panda-paper leading-tight halloween-glow">
             A caixa de ferramentas do teu pai, aquele panda
           </h1>
           <p className="text-panda-gray dark:text-white/60 max-w-md">
@@ -38,6 +38,18 @@ export default function Home() {
         <div className="hidden md:flex justify-center">
           <div className="relative w-48 aspect-333/344 animate-panda-breathe">
             <PandaMascot className="w-full h-full drop-shadow-lg" />
+            <span
+              aria-hidden="true"
+              className="animate-ghost-float absolute -top-2 -right-4 text-4xl"
+            >
+              👻
+            </span>
+            <span
+              aria-hidden="true"
+              className="animate-pumpkin-flicker absolute -bottom-1 -left-5 text-4xl"
+            >
+              🎃
+            </span>
           </div>
         </div>
       </section>
