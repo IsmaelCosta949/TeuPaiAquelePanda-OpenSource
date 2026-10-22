@@ -34,8 +34,8 @@ export function EmailAddressBar() {
   }
 
   return (
-    <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-5 space-y-4 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
-      <div className="flex items-center justify-between gap-3">
+    <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-4 sm:p-5 space-y-4 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
+      <div className="min-w-0">
         <code className="text-lg sm:text-xl font-semibold text-panda-ink dark:text-panda-paper break-all">
           {address}
         </code>
@@ -58,7 +58,7 @@ export function EmailAddressBar() {
         >
           Apagar e-mail
         </Button>
-        <span className="ml-auto text-xs font-mono text-panda-gray dark:text-white/50">
+        <span className="w-full text-xs sm:ml-auto sm:w-auto font-mono text-panda-gray dark:text-white/50">
           expira em {formatClock(secondsLeft)}
         </span>
       </div>

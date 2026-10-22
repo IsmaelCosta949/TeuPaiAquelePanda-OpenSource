@@ -25,7 +25,7 @@ export default function Inbox() {
 
   if (!address) {
     return (
-      <section className="rounded-3xl border border-dashed border-panda-ink/20 dark:border-white/20 py-16 flex flex-col items-center gap-4 text-center">
+      <section className="rounded-3xl border border-dashed border-panda-ink/20 dark:border-white/20 px-4 py-12 sm:py-16 flex flex-col items-center gap-4 text-center">
         <PandaMascot className="w-20 aspect-333/344 opacity-70" />
         <p className="text-panda-gray dark:text-white/50 text-sm max-w-sm">
           Você ainda não tem um endereço ativo.
@@ -42,7 +42,7 @@ export default function Inbox() {
       <EmailAddressBar />
 
       <section className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
           <h1 className="font-display text-xl font-semibold text-panda-ink dark:text-panda-paper flex items-center gap-2">
             Caixa de entrada
             {unreadCount > 0 && (
