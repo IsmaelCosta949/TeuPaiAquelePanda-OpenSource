@@ -1,9 +1,9 @@
-export const UPDATE_DATE = "2026-10-12";
+export const UPDATE_DATE = "2026-10-22";
 
-export const UPDATE_TITLE = "Mais ferramentas pra você! 🧰";
+export const UPDATE_TITLE = "Feliz Halloween! 🎃";
 
 export const UPDATE_ITEMS = [
-  "Para QA e devs: validador de CPF/CNPJ, gerador de pessoa fictícia e gerador de cartão de teste.",
-  "Conversor de timestamp, gerador de hash (SHA-256 e outros) e gerador de QR Code.",
-  "Gerador de Lorem Ipsum para preencher layouts. Todas aparecem no menu \"Ferramentas\".",
+  "Feliz Halloween! 👻 O Panda entrou no ritmo da festa e o site ganhou um visual assombrado.",
+  "Abóboras, morcegos e teias de aranha estão rondando por aí. Cuidado com os sustos! 🦇🕸️",
+  "Seus e-mails temporários e todas as ferramentas continuam funcionando normalmente. Aproveite a noite! 🍬",
 ];
