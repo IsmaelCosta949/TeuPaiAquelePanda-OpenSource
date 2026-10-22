@@ -11,12 +11,6 @@ export type ToolContent = {
   faq: { question: string; answer: string }[];
 };
 
-const FICTIONAL_DOC_FAQ = {
-  question: "Posso usar esse número para me cadastrar em sites?",
-  answer:
-    "Não. Os números servem apenas para testar formulários e sistemas em ambiente de desenvolvimento ou QA. Usá-los para burlar cadastros ou cometer fraude não é permitido.",
-};
-
 export const TOOL_CONTENT: Record<string, ToolContent> = {
   "email-temporario": {
     about:
@@ -119,6 +113,20 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "Para testes mais completos, vale gerar também casos inválidos de propósito, como trocar o último dígito ou usar uma sequência repetida, e confirmar que o sistema recusa esses valores. O validador de CPF e CNPJ deste site ajuda a conferir os dois lados.",
         ],
       },
+      {
+        title: "Casos de borda que todo teste de CPF deveria cobrir",
+        paragraphs: [
+          "Passar na conta do módulo 11 não basta para um CPF ser aceito. Sequências de um mesmo dígito repetido, como 111.111.111-11, satisfazem a matemática dos verificadores, mas são recusadas pela Receita e por praticamente todo validador sério. Este gerador nunca devolve números assim.",
+          "Ao montar a suíte de testes de um formulário, vale combinar um CPF válido gerado aqui com casos de recusa de propósito:",
+        ],
+        list: [
+          "CPF com 10 ou 12 dígitos, para checar o tamanho máximo do campo.",
+          "Sequência repetida (000.000.000-00, 111.111.111-11…), que deve ser recusada.",
+          "Último dígito alterado, para confirmar que o verificador é de fato conferido.",
+          "CPF colado com pontos e traço e CPF colado só com números: os dois devem ser aceitos.",
+          "CPF começando com zero, que se perde se o sistema o guardar como número inteiro.",
+        ],
+      },
     ],
     faq: [
       {
@@ -126,11 +134,20 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
         answer:
           "Não, ele é aleatório. Como a conta dos dígitos verificadores é pública, um número gerado pode coincidir por acaso com um CPF real, e por isso só deve ser usado em testes.",
       },
-      FICTIONAL_DOC_FAQ,
+      {
+        question: "Posso usar esse CPF para me cadastrar em um site de verdade?",
+        answer:
+          "Não. Ele serve para testar sistemas que você desenvolve ou tem autorização para testar. Usar um número gerado para driblar cadastros pode configurar fraude e viola os termos de quase todo serviço.",
+      },
       {
         question: "Como o dígito verificador é calculado?",
         answer:
           "Cada um dos nove primeiros dígitos é multiplicado por um peso decrescente, a soma é dividida por 11 e o resto define o primeiro verificador. O segundo repete a conta incluindo o primeiro.",
+      },
+      {
+        question: "Por que o gerador nunca devolve 111.111.111-11?",
+        answer:
+          "Porque sequências com todos os dígitos iguais passam no cálculo, mas não são CPFs válidos pelas regras da Receita. O gerador as descarta para que os números criados sejam aceitos por qualquer validador.",
       },
     ],
   },
@@ -164,6 +181,20 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "Este gerador e o validador do site trabalham com o formato só de números, que ainda é o da imensa maioria das empresas. Se o seu sistema guarda CNPJ como número inteiro ou usa máscara só de dígitos, vale planejar a mudança para texto.",
         ],
       },
+      {
+        title: "Casos de borda ao testar campos de CNPJ",
+        paragraphs: [
+          "O gerador sempre cria CNPJs de matriz (final /0001). Para testar filiais, o ideal é gerar um número aqui e recalcular os verificadores com a nova ordem de estabelecimento, pois trocar só os quatro dígitos da filial invalida o CNPJ. O validador de CPF e CNPJ do site ajuda a conferir o resultado.",
+          "Além do cálculo, alguns problemas aparecem com frequência em sistemas reais:",
+        ],
+        list: [
+          "CNPJ que começa com zero e perde o zero à esquerda quando é guardado como número.",
+          "Campo com máscara que só aceita 14 dígitos, mas recebe o valor colado com pontos, barra e traço.",
+          "Comparação da empresa pela raiz (8 primeiros dígitos) para agrupar matriz e filiais.",
+          "Validação que reaproveita os pesos do CPF e recusa CNPJs verdadeiros.",
+          "Preparação para o CNPJ alfanumérico: o campo deve guardar texto, não número.",
+        ],
+      },
     ],
     faq: [
       {
@@ -171,7 +202,21 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
         answer:
           "Não, ele é aleatório e sempre usa a filial 0001. Por coincidência pode bater com um CNPJ existente, por isso use apenas em testes.",
       },
-      FICTIONAL_DOC_FAQ,
+      {
+        question: "Posso usar esse CNPJ para abrir conta ou cadastro de empresa?",
+        answer:
+          "Não. Ele é fictício e só vale para testar formulários e sistemas sob o seu controle. Para operações reais é preciso o CNPJ de uma empresa registrada.",
+      },
+      {
+        question: "Por que o CNPJ gerado sempre termina em /0001?",
+        answer:
+          "Porque o gerador cria a matriz da empresa. O número da filial entra no cálculo dos verificadores, então mudar esses quatro dígitos exige recalcular os dois últimos.",
+      },
+      {
+        question: "Por que meu CNPJ perde o zero no começo?",
+        answer:
+          "Isso acontece quando o valor é tratado como número. CNPJ é um identificador, não uma quantidade: guarde sempre como texto para preservar os zeros à esquerda.",
+      },
     ],
   },
   "gerador-de-rg": {
@@ -206,6 +251,13 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "Se o sistema atende vários estados, evite exigir o formato paulista para todo mundo.",
         ],
       },
+      {
+        title: "Exemplo do cálculo usado por este gerador",
+        paragraphs: [
+          "O gerador usa 8 dígitos e calcula o último multiplicando cada um por um peso de 2 a 9, da esquerda para a direita. Para a base 12345678, a conta é 1×2 + 2×3 + 3×4 + 4×5 + 5×6 + 6×7 + 7×8 + 8×9 = 240. Dividindo 240 por 11, o resto é 9, então o RG fica 123456789.",
+          "Quando o resto da divisão é 10, não cabe em um único dígito e o verificador vira a letra X. Por isso o campo de RG precisa aceitar letra no último caractere. Lembre que essa regra segue o modelo de São Paulo e não é um padrão nacional.",
+        ],
+      },
     ],
     faq: [
       {
@@ -213,7 +265,21 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
         answer:
           "Não. Ele segue o modelo de São Paulo; sistemas que validam o RG de outro estado podem rejeitá-lo.",
       },
-      FICTIONAL_DOC_FAQ,
+      {
+        question: "Posso usar esse RG como documento de identificação?",
+        answer:
+          "Não. É um número fictício, sem qualquer valor legal, criado só para testar máscaras, tamanhos de campo e validações.",
+      },
+      {
+        question: "Por que o último dígito do RG pode ser X?",
+        answer:
+          "Porque o resto 10 da divisão por 11 não cabe em um dígito. Nesse caso o verificador é escrito como X, e formulários que só aceitam números acabam recusando RGs verdadeiros.",
+      },
+      {
+        question: "Posso validar RG de qualquer estado com esse gerador?",
+        answer:
+          "Não. Cada estado tem sua numeração, e este gerador segue só o modelo paulista. Para outros estados, trate o RG como texto livre ou use a regra específica do órgão emissor.",
+      },
     ],
   },
   "validador-de-cpf-cnpj": {
@@ -298,6 +364,20 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "Datas de nascimento: o sistema calcula a idade e respeita a idade mínima exigida?",
         ],
       },
+      {
+        title: "O que cada campo gerado contém",
+        paragraphs: [
+          "Cada pessoa é montada a partir de listas de nomes, sobrenomes, ruas e bairros brasileiros, combinados de forma aleatória. Os campos seguem estas regras:",
+        ],
+        list: [
+          "Nome: um primeiro nome e dois sobrenomes comuns no Brasil, com acentos.",
+          "CPF: com dígitos verificadores válidos e sem sequências repetidas.",
+          "E-mail: nome.sobrenome mais dois dígitos, sempre no domínio reservado example.com.",
+          "Telefone: celular com DDD e nove dígitos, coerente com a cidade sorteada.",
+          "Nascimento: data que torna a pessoa maior de idade (entre 18 e 70 anos).",
+          "Endereço: rua, número e bairro sorteados, com cidade, UF e início do CEP de uma entre 11 capitais.",
+        ],
+      },
     ],
     faq: [
       {
@@ -310,7 +390,21 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
         answer:
           "Não necessariamente. A cidade, a UF, o DDD e o início do CEP são coerentes entre si, mas a rua e o número são sorteados.",
       },
-      FICTIONAL_DOC_FAQ,
+      {
+        question: "Posso usar esses dados em um cadastro de verdade?",
+        answer:
+          "Não. Eles servem para testes e protótipos. Usar dados fictícios para se passar por outra pessoa ou burlar um serviço não é permitido.",
+      },
+      {
+        question: "As pessoas geradas são sempre maiores de idade?",
+        answer:
+          "Sim. A data de nascimento é sorteada para resultar em uma idade entre 18 e 70 anos, o que evita barrar o cadastro em sistemas com idade mínima.",
+      },
+      {
+        question: "Por que o e-mail usa example.com?",
+        answer:
+          "Porque example.com é um domínio reservado para exemplos (RFC 2606) e não recebe mensagens de verdade. Assim, um teste que dispare e-mails por engano não chega a ninguém. Para receber mensagens de teste, use o e-mail temporário do site.",
+      },
     ],
   },
   "gerador-de-cartao-de-credito": {
@@ -453,6 +547,20 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "Também é uma forma rápida de validar um arquivo de configuração antes de subir uma alteração: se o formatador acusar erro, a aplicação também vai acusar.",
         ],
       },
+      {
+        title: "Os erros de JSON mais comuns, com exemplos",
+        paragraphs: [
+          "Quase todo erro de JSON vem de hábitos de JavaScript que o formato não aceita. Veja os casos mais frequentes e como corrigir:",
+        ],
+        list: [
+          "Aspas simples: {'nome': 'panda'} é inválido; use {\"nome\": \"panda\"}.",
+          "Chave sem aspas: {nome: \"panda\"} é inválido; a chave precisa de aspas duplas.",
+          "Vírgula no final: {\"a\": 1,} e [1, 2,] são inválidos.",
+          "Comentários: // e /* */ não existem em JSON; remova-os ou guarde a observação em um campo.",
+          "Valores especiais: undefined, NaN e Infinity não são aceitos; use null ou um texto.",
+          "Texto com quebra de linha: dentro das aspas a quebra precisa ser escrita como \\n.",
+        ],
+      },
     ],
     faq: [
       {
@@ -463,6 +571,21 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       {
         question: "Meus dados são enviados para algum servidor?",
         answer: "Não. O JSON é validado e formatado no seu navegador.",
+      },
+      {
+        question: "JSON aceita comentários ou vírgula no final?",
+        answer:
+          "Não. Nenhum dos dois faz parte do formato. Alguns arquivos de configuração usam variações como JSONC ou JSON5, que aceitam essas liberdades, mas o JSON puro não.",
+      },
+      {
+        question: "Qual a diferença entre JSON e um objeto JavaScript?",
+        answer:
+          "O JSON é um formato de texto mais restrito: exige aspas duplas nas chaves e nos textos e não aceita funções, undefined nem comentários. Um objeto JavaScript é uma estrutura em memória que pode ter tudo isso.",
+      },
+      {
+        question: "O que significa “Unexpected token” na mensagem de erro?",
+        answer:
+          "Que o analisador encontrou um caractere onde não esperava, geralmente perto da posição indicada na mensagem. A redação exata muda de navegador para navegador, mas o erro costuma estar no caractere citado ou um pouco antes dele.",
       },
     ],
   },
@@ -554,6 +677,13 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "IDs de correlação para rastrear uma requisição entre vários serviços nos logs.",
         ],
       },
+      {
+        title: "UUIDs na prática: onde gerar e o risco de repetição",
+        paragraphs: [
+          "Além do navegador, quase toda linguagem gera UUIDs v4 de forma nativa: crypto.randomUUID() em JavaScript e no Node.js, uuid.uuid4() em Python e gen_random_uuid() no PostgreSQL. A saída é sempre no mesmo formato, então os valores gerados aqui servem como dados de exemplo para testar colunas, APIs e importações.",
+          "Sobre colisão: um UUID v4 tem 122 bits aleatórios. Seriam necessários cerca de 2,7 quintilhões de UUIDs (2,7 × 10^18) para chegar a 50% de chance de uma repetição, o que na prática torna o risco desprezível em qualquer sistema comum.",
+        ],
+      },
     ],
     faq: [
       {
@@ -565,6 +695,21 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
         question: "Qual a diferença entre UUID e GUID?",
         answer:
           "É o mesmo formato. GUID é o nome usado no ecossistema Microsoft.",
+      },
+      {
+        question: "UUID e GUID são a mesma coisa?",
+        answer:
+          "Na prática, sim. GUID é o nome que a Microsoft usa para o mesmo identificador de 128 bits, e os dois seguem o mesmo formato.",
+      },
+      {
+        question: "Dois UUIDs gerados podem ser iguais?",
+        answer:
+          "Em teoria sim, mas a probabilidade é tão pequena que é ignorada na prática. Com 122 bits aleatórios, só depois de bilhões de bilhões de UUIDs a chance de repetição passa a ser relevante.",
+      },
+      {
+        question: "O UUID v4 é seguro para usar como token de acesso?",
+        answer:
+          "Não é o ideal. Embora seja aleatório, ele foi pensado para identificar registros, não para autenticar. Para tokens secretos, use um gerador criptográfico próprio com mais bits, como o gerador de senhas do site.",
       },
     ],
   },
@@ -602,6 +747,13 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "Se a decodificação de um texto que veio de uma URL falhar, vale conferir se ele não está em Base64URL: trocar - por + e _ por / costuma resolver.",
         ],
       },
+      {
+        title: "Exemplo passo a passo",
+        paragraphs: [
+          "O texto “Panda” vira UGFuZGE= em Base64. O Base64 lê os bytes do texto em grupos de três e converte cada grupo em quatro caracteres do alfabeto (A–Z, a–z, 0–9, + e /). Como “Panda” tem cinco bytes, o último grupo fica incompleto e é completado com o sinal de igual (=).",
+          "Textos com acentos são primeiro convertidos para bytes UTF-8, e por isso “Olá” (quatro bytes, pois o á ocupa dois) vira T2zDoQ==. Nas duas contas, a regra é a mesma: três bytes de entrada geram quatro caracteres de saída, o que faz o Base64 ficar cerca de 33% maior que o original.",
+        ],
+      },
     ],
     faq: [
       {
@@ -613,6 +765,16 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
         question: "Por que a decodificação dá erro?",
         answer:
           "O texto pode ter caracteres fora do alfabeto Base64 ou não representar um texto UTF-8 válido, como acontece com arquivos binários.",
+      },
+      {
+        question: "Por que o Base64 termina com =?",
+        answer:
+          "Porque a conversão trabalha em grupos de três bytes. Quando sobram um ou dois bytes no final, o resultado é completado com um ou dois sinais de igual para manter o tamanho múltiplo de quatro.",
+      },
+      {
+        question: "O Base64 deixa o arquivo maior?",
+        answer:
+          "Sim, em cerca de 33%. Cada três bytes viram quatro caracteres, então embutir uma imagem grande em Base64 aumenta o tamanho da página.",
       },
     ],
   },
@@ -800,6 +962,13 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "A estimativa usa uma média de 200 palavras por minuto, um ritmo confortável para leitura em tela. Pessoas que leem muito chegam a 250 ou 300, e textos técnicos costumam ser lidos mais devagar. Use o número como referência, não como regra, por exemplo para avisar quanto tempo leva um artigo ou para calcular a duração de um discurso.",
         ],
       },
+      {
+        title: "Exemplo prático: escrevendo uma meta description",
+        paragraphs: [
+          "Para o resultado do Google, a meta description deve ficar em torno de 150 a 160 caracteres. Cole o seu texto na caixa e confira o número de “Caracteres”: se passar de 160, o final provavelmente será cortado com reticências. Vale colocar a informação mais importante no começo da frase, para que ela apareça mesmo se o corte acontecer.",
+          "O mesmo vale para o título da página, que aparece inteiro em torno de 50 a 60 caracteres, e para mensagens de SMS, em que ultrapassar o limite faz a operadora dividir o texto em duas mensagens e cobrar as duas.",
+        ],
+      },
     ],
     faq: [
       {
@@ -811,6 +980,16 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
         question: "Como as palavras são contadas?",
         answer:
           "Qualquer sequência de caracteres separada por espaço, tabulação ou quebra de linha conta como uma palavra.",
+      },
+      {
+        question: "O que conta como linha?",
+        answer:
+          "Cada quebra de linha começa uma nova linha. Um texto sem nenhuma quebra tem 1 linha, e uma linha em branco no final também é contada. Com a caixa vazia, o total é 0.",
+      },
+      {
+        question: "Por que o contador do X mostra um número diferente?",
+        answer:
+          "Porque cada plataforma tem regras próprias. O X, por exemplo, conta todo link como 23 caracteres e trata alguns emojis como dois. Use este contador como referência e confira o limite na própria plataforma.",
       },
     ],
   },
@@ -845,6 +1024,13 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
           "Para validar a experiência com usuários, prefira conteúdo real; texto sem sentido só serve para avaliar forma.",
         ],
       },
+      {
+        title: "Como o gerador monta o texto",
+        paragraphs: [
+          "O texto é montado a partir de um vocabulário fixo de palavras do latim clássico, sorteadas a cada clique. Cada frase tem de 6 a 14 palavras e cada parágrafo, de 3 a 6 frases. Por isso o resultado muda sempre que você pede um novo texto, mas mantém o aspecto de um texto corrido de verdade.",
+          "Os limites são 10 parágrafos, 30 frases ou 200 palavras por vez, o bastante para preencher uma página de teste. Com a opção “Começar com Lorem ipsum dolor sit amet” marcada, o início fica sempre igual à frase clássica, o que ajuda a identificar rapidamente o que é texto provisório.",
+        ],
+      },
     ],
     faq: [
       {
@@ -856,6 +1042,16 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
         question: "Por que usar texto sem sentido em vez de texto real?",
         answer:
           "Para que quem avalia o layout olhe a forma e não se distraia lendo o conteúdo.",
+      },
+      {
+        question: "O texto gerado é sempre o mesmo?",
+        answer:
+          "Não. Só o começo é fixo quando a frase clássica está ativada. O restante é sorteado a cada geração, então dois cliques seguidos produzem textos diferentes.",
+      },
+      {
+        question: "Existe Lorem Ipsum em português?",
+        answer:
+          "O texto original é em latim, mas há geradores que imitam o português. Se o seu layout vai ter conteúdo em português, vale testar também com frases reais, pois palavras acentuadas e mais longas mudam as quebras de linha.",
       },
     ],
   },

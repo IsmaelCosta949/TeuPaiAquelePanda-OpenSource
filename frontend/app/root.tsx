@@ -43,11 +43,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
         {import.meta.env.VITE_ADSENSE_CLIENT_ID && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.VITE_ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-          ></script>
+          <meta
+            name="google-adsense-account"
+            content={import.meta.env.VITE_ADSENSE_CLIENT_ID}
+          />
         )}
         {import.meta.env.VITE_CF_ANALYTICS_TOKEN && (
           <script
