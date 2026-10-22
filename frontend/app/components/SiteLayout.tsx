@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
+import { AdSenseScript } from "./AdSenseScript";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { UpdateAnnouncementDialog } from "./UpdateAnnouncementDialog";
@@ -28,6 +29,7 @@ export default function SiteLayout() {
 
   return (
     <MailProvider>
+      <AdSenseScript />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-panda-red focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
