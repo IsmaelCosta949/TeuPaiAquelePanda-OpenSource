@@ -36,12 +36,18 @@ export function Footer() {
             cadastro. E-mails recebidos expiram automaticamente e somem para
             sempre.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link to="/sobre" className={linkClass}>
+              Sobre
+            </Link>
             <Link to="/suporte" className={linkClass}>
               Suporte
             </Link>
             <Link to="/termos" className={linkClass}>
               Termos
+            </Link>
+            <Link to="/privacidade" className={linkClass}>
+              Privacidade
             </Link>
           </div>
         </div>

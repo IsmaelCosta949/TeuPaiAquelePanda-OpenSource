@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import type { Route } from "./+types/home";
 import { PandaMascot } from "../components/images/PandaMascot";
 import { ToolCard } from "../components/ToolCard";
@@ -74,6 +75,54 @@ export default function Home() {
           </div>
         </section>
       ))}
+
+      <section
+        aria-labelledby="sobre-o-site"
+        className="max-w-2xl space-y-4 text-sm text-panda-gray dark:text-white/60"
+      >
+        <h2
+          id="sobre-o-site"
+          className="font-display text-xl font-bold text-panda-ink dark:text-panda-paper"
+        >
+          Feito para quem desenvolve, testa e não quer spam
+        </h2>
+        <p>
+          O Teu Pai, Aquele Panda reúne as ferramentas que a gente mais
+          procura no dia a dia de desenvolvimento e QA no Brasil. Precisa
+          testar o cadastro do seu sistema? Gere um e-mail temporário para
+          receber o código de confirmação e um CPF com dígitos verificadores
+          válidos para passar na validação. Está investigando um erro de
+          autenticação? Decodifique o JWT e veja se ele já expirou. Recebeu um
+          JSON todo em uma linha? Formate e encontre o campo que procura.
+        </p>
+        <p>
+          Cada ferramenta vem com uma explicação do que acontece por trás: como
+          o cálculo do CPF e do CNPJ funciona, o que torna uma senha forte, as
+          partes de um token JWT, a diferença entre SHA-1 e SHA-256 e mais. A
+          ideia é resolver o problema rápido e, de quebra, entender o que você
+          está usando.
+        </p>
+        <p>
+          Todas as ferramentas são gratuitas e não pedem cadastro. Com exceção
+          do e-mail temporário, elas rodam inteiramente no seu navegador, então
+          o que você digita não sai do seu dispositivo. Os dados gerados são
+          fictícios e servem apenas para testes. Saiba mais{" "}
+          <Link
+            to="/sobre"
+            className="text-panda-red dark:text-panda-red-light font-medium"
+          >
+            sobre o projeto
+          </Link>{" "}
+          ou leia a{" "}
+          <Link
+            to="/privacidade"
+            className="text-panda-red dark:text-panda-red-light font-medium"
+          >
+            política de privacidade
+          </Link>
+          .
+        </p>
+      </section>
     </div>
   );
 }
