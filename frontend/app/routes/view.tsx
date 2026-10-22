@@ -31,7 +31,7 @@ export default function ViewMessage() {
 
   if (!message) {
     return (
-      <section className="rounded-3xl border border-dashed border-panda-ink/20 dark:border-white/20 py-16 flex flex-col items-center gap-4 text-center">
+      <section className="rounded-3xl border border-dashed border-panda-ink/20 dark:border-white/20 px-4 py-12 sm:py-16 flex flex-col items-center gap-4 text-center">
         <PandaMascot className="w-20 aspect-333/344 opacity-70" />
         <p className="text-panda-gray dark:text-white/50 text-sm">
           Esse e-mail não foi encontrado (ou já expirou).
@@ -52,12 +52,12 @@ export default function ViewMessage() {
         ← Voltar para a caixa de entrada
       </Link>
 
-      <div className="rounded-3xl border border-panda-ink/10 dark:border-white/10 bg-white dark:bg-panda-charcoal p-6 space-y-4">
-        <div>
-          <h1 className="font-display text-xl font-semibold text-panda-ink dark:text-panda-paper">
+      <div className="rounded-3xl border border-panda-ink/10 dark:border-white/10 bg-white dark:bg-panda-charcoal p-4 sm:p-6 space-y-4">
+        <div className="min-w-0">
+          <h1 className="font-display text-xl font-semibold break-words text-panda-ink dark:text-panda-paper">
             {message.subject}
           </h1>
-          <p className="text-xs text-panda-gray dark:text-white/50 mt-1">
+          <p className="text-xs text-panda-gray dark:text-white/50 mt-1 break-words">
             de {message.fromName} &lt;{message.from}&gt; ·{" "}
             {formatTime(message.receivedAt)}
           </p>

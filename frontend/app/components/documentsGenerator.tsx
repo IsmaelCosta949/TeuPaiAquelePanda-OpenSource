@@ -33,7 +33,7 @@ export default function DocumentGenerator({ ...props }: DocGeneratorProps) {
         })}
       </ul>
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
         <Button onPress={regenerate}>Gerar novos</Button>
         <Checkbox
           isSelected={formatted}

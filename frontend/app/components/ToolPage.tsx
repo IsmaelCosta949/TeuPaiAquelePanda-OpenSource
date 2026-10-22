@@ -16,12 +16,12 @@ export function ToolPage({ slug, notice, children }: ToolPageProps) {
   const related = toolsByCategory(tool.category).filter((t) => t.slug !== slug);
 
   return (
-    <div className="space-y-8">
+    <div className="min-w-0 space-y-8">
       <section className="w-full space-y-6">
         <div className="space-y-2">
           <nav
             aria-label="Você está em"
-            className="text-xs text-panda-gray dark:text-white/50"
+            className="text-xs break-words text-panda-gray dark:text-white/50"
           >
             <Link
               to="/"
@@ -32,7 +32,7 @@ export function ToolPage({ slug, notice, children }: ToolPageProps) {
             <span aria-hidden="true"> › </span>
             <span aria-current="page">{tool.name}</span>
           </nav>
-          <h1 className="font-display text-2xl font-bold text-panda-ink dark:text-panda-paper">
+          <h1 className="font-display text-2xl font-bold break-words text-panda-ink dark:text-panda-paper">
             {tool.name}
           </h1>
           <p className="text-panda-gray dark:text-white/60">{tool.tagline}</p>
@@ -43,7 +43,7 @@ export function ToolPage({ slug, notice, children }: ToolPageProps) {
           )}
         </div>
 
-        <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-5 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
+        <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-4 sm:p-5 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
           {children}
         </div>
       </section>

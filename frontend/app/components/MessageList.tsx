@@ -8,7 +8,7 @@ export function MessageList() {
 
   if (messages.length === 0) {
     return (
-      <div className="rounded-3xl border border-dashed border-panda-ink/20 dark:border-white/20 py-16 flex flex-col items-center gap-3 text-center">
+      <div className="rounded-3xl border border-dashed border-panda-ink/20 dark:border-white/20 px-4 py-12 sm:py-16 flex flex-col items-center gap-3 text-center">
         <PandaMascot className="w-20 aspect-333/344 opacity-70" />
         <p className="text-panda-gray dark:text-white/50 text-sm">
           Nenhum e-mail ainda. O panda tá cochilando esperando sua primeira
@@ -27,7 +27,7 @@ export function MessageList() {
         >
           <Link
             to={`/email/${msg.id}`}
-            className="w-full text-left px-4 py-3 flex items-center gap-3"
+            className="w-full min-w-0 text-left px-3 py-3 sm:px-4 flex items-center gap-3"
           >
             <span
               aria-hidden="true"
@@ -39,7 +39,7 @@ export function MessageList() {
             />
             {!msg.read && <span className="sr-only">Não lida: </span>}
             <span className="min-w-0 flex-1">
-              <span className="flex items-baseline gap-2">
+              <span className="flex min-w-0 items-baseline gap-2">
                 <span className="font-medium text-panda-ink dark:text-panda-paper truncate">
                   {msg.fromName}
                 </span>

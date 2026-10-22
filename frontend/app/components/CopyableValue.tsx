@@ -28,12 +28,12 @@ export function CopyableValue({ value, className }: CopyableValueProps) {
     <Button
       variant="ghost"
       onPress={handleCopy}
-      className="h-auto w-full justify-between gap-3 rounded-xl border border-panda-ink/15 bg-panda-cream px-4 py-2.5 text-left font-normal hover:border-panda-red/50 dark:border-white/15 dark:bg-white/5"
+      className="h-auto w-full min-w-0 justify-between gap-3 whitespace-normal rounded-xl border border-panda-ink/15 bg-panda-cream px-4 py-2.5 text-left font-normal hover:border-panda-red/50 dark:border-white/15 dark:bg-white/5"
     >
       <code
         className={
           className ??
-          "text-sm sm:text-base font-mono text-panda-ink dark:text-panda-paper break-all"
+          "min-w-0 text-sm sm:text-base font-mono text-panda-ink dark:text-panda-paper break-all"
         }
       >
         {value}

@@ -16,7 +16,7 @@ export function EmailBody({ ...props }: { body: string; isHtml: boolean }) {
 
   if (!props.isHtml) {
     return (
-      <div className="text-sm text-panda-ink dark:text-white/80 whitespace-pre-line">
+      <div className="text-sm text-panda-ink dark:text-white/80 whitespace-pre-line break-words">
         {props.body}
       </div>
     );

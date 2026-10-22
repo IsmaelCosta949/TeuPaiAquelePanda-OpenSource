@@ -59,7 +59,7 @@ export default function EmailTemporario() {
   return (
     <div className="space-y-10">
     <section className="grid md:grid-cols-[1fr_auto] gap-8 items-center">
-      <div className="space-y-5">
+      <div className="min-w-0 space-y-5">
         <h1 className="font-display text-3xl sm:text-4xl font-bold text-panda-ink dark:text-panda-paper leading-tight">
           E-mail temporário com a proteção do teu pai, aquele panda
         </h1>
@@ -69,7 +69,7 @@ export default function EmailTemporario() {
         </p>
 
         {address ? (
-          <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-5 space-y-4 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
+          <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-4 sm:p-5 space-y-4 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
             <p className="text-sm text-panda-gray dark:text-white/60">
               Você já tem um endereço ativo:
             </p>
@@ -79,7 +79,7 @@ export default function EmailTemporario() {
             <Button onPress={goToInbox}>Ir para a caixa de entrada</Button>
           </div>
         ) : (
-          <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-5 space-y-5 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
+          <div className="rounded-3xl border-2 border-panda-ink dark:border-white/20 bg-white dark:bg-panda-charcoal p-4 sm:p-5 space-y-5 shadow-[4px_4px_0_0_var(--color-panda-ink)] dark:shadow-none">
             <form onSubmit={handleCreateCustom} className="space-y-2">
               <label
                 htmlFor="custom-local"
@@ -95,9 +95,9 @@ export default function EmailTemporario() {
                   placeholder="seu-nome"
                   aria-invalid={!!error}
                   aria-describedby={error ? errorId : undefined}
-                  className="h-auto min-w-0 flex-1 rounded-full border-2 border-panda-ink/20 bg-transparent px-4 py-2 text-sm text-panda-ink focus-visible:border-panda-red focus-visible:ring-0 dark:border-white/20 dark:text-panda-paper"
+                  className="h-auto min-w-[10rem] flex-1 rounded-full border-2 border-panda-ink/20 bg-transparent px-4 py-2 text-sm text-panda-ink focus-visible:border-panda-red focus-visible:ring-0 dark:border-white/20 dark:text-panda-paper"
                 />
-                <span className="text-sm text-panda-gray dark:text-white/50">
+                <span className="text-sm break-all text-panda-gray dark:text-white/50">
                   @{DOMAINS[0]}
                 </span>
               </div>

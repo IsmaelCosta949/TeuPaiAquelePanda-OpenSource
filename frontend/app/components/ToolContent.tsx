@@ -8,7 +8,7 @@ export function ToolContent({ slug }: { slug: string }) {
   if (!content) return null;
 
   return (
-    <div className="space-y-8">
+    <div className="min-w-0 space-y-8 break-words">
       <section aria-labelledby="sobre" className="space-y-2">
         <h2
           id="sobre"
@@ -75,7 +75,7 @@ export function ToolContent({ slug }: { slug: string }) {
               key={item.question}
               className="group rounded-2xl border border-panda-ink/15 bg-white px-4 py-3 dark:border-white/15 dark:bg-panda-charcoal"
             >
-              <summary className="cursor-pointer list-none text-sm font-medium text-panda-ink outline-none focus-visible:ring-3 focus-visible:ring-panda-red/50 rounded-md dark:text-panda-paper [&::-webkit-details-marker]:hidden">
+              <summary className="cursor-pointer list-none break-words text-sm font-medium text-panda-ink outline-none focus-visible:ring-3 focus-visible:ring-panda-red/50 rounded-md dark:text-panda-paper [&::-webkit-details-marker]:hidden">
                 <span className="mr-2 inline-block transition-transform group-open:rotate-90" aria-hidden="true">
                   ›
                 </span>

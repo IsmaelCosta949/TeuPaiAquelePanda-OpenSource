@@ -59,7 +59,7 @@ function ToolsMenu() {
 export function Header() {
   return (
     <header className="border-b border-panda-ink/10 dark:border-white/10">
-      <div className="max-w-5xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+      <div className="max-w-5xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
         <NavLink to="/" className="flex items-center gap-3">
           <img
             src="/teupaiaquelepanda_logo_icon.png"
@@ -78,7 +78,7 @@ export function Header() {
           </span>
         </NavLink>
 
-        <nav className="flex items-center gap-4 text-sm font-display">
+        <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-display">
           {NAV_LINKS_BEFORE_TOOLS.map((link) => (
             <NavLink
               key={link.to}
