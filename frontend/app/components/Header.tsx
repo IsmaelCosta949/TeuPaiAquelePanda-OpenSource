@@ -74,6 +74,12 @@ export function Header() {
             </span>
             <span className="block text-lg sm:text-xl font-bold text-panda-red dark:text-panda-red-light -mt-0.5">
               Aquele Panda
+              <span
+                aria-hidden="true"
+                className="animate-pumpkin-flicker ml-1 inline-block text-base sm:text-lg"
+              >
+                🎃
+              </span>
             </span>
           </span>
         </NavLink>

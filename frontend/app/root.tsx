@@ -31,12 +31,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="theme-color"
-          content="#faf9f6"
+          content="#fbf5ec"
           media="(prefers-color-scheme: light)"
         />
         <meta
           name="theme-color"
-          content="#1a1a1d"
+          content="#14081f"
           media="(prefers-color-scheme: dark)"
         />
         <script dangerouslySetInnerHTML={{ __html: THEME_SYNC_SCRIPT }} />

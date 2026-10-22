@@ -12,16 +12,19 @@
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-display: "Fredoka Variable", "Fredoka", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 
-  --color-panda-ink: #1a1a1d;
-  --color-panda-charcoal: #2b2c31;
-  --color-panda-paper: #faf9f6;
-  --color-panda-cream: #f2efe8;
-  --color-panda-red: #d42111;
-  --color-panda-red-dark: #a81a0d;
-  --color-panda-red-light: #f47e74;
-  --color-panda-bamboo: #4c9a6a;
-  --color-panda-bamboo-dark: #3a7c53;
-  --color-panda-gray: #6b6f76;
+  /* Paleta Halloween: os nomes "panda-*" são mantidos para não reescrever
+     todos os componentes; aqui red = abóbora, bamboo = verde-gosma. */
+  --color-panda-ink: #14081f;
+  --color-panda-charcoal: #24123a;
+  --color-panda-paper: #fbf5ec;
+  --color-panda-cream: #f4e6d3;
+  --color-panda-red: #c2410c;
+  --color-panda-red-dark: #9a3412;
+  --color-panda-red-light: #ff9a3c;
+  --color-panda-bamboo: #6aa84f;
+  --color-panda-bamboo-dark: #4d8a36;
+  --color-panda-gray: #6b5f78;
+  --color-halloween-purple: #7c3aed;
 }
 
 html,
@@ -39,6 +42,104 @@ body {
 
 .font-display {
   font-family: var(--font-display);
+}
+
+/* ---------- Halloween ---------- */
+body {
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% -10%, rgb(255 154 60 / 0.28), transparent),
+    radial-gradient(ellipse 45% 35% at 0% 100%, rgb(124 58 237 / 0.10), transparent);
+  background-attachment: fixed;
+}
+
+.dark body {
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% -10%, rgb(124 58 237 / 0.28), transparent),
+    radial-gradient(ellipse 40% 30% at 100% 100%, rgb(255 122 0 / 0.12), transparent);
+  background-attachment: fixed;
+}
+
+.halloween-glow {
+  text-shadow: 0 0 18px rgb(255 122 0 / 0.35);
+}
+
+.cobweb {
+  position: absolute;
+  color: rgb(60 30 90 / 0.35);
+}
+
+.dark .cobweb {
+  color: rgb(255 255 255 / 0.28);
+}
+
+@keyframes bat-fly {
+  0% {
+    transform: translate(-10vw, 0) scale(var(--bat-scale, 1));
+  }
+  25% {
+    transform: translate(25vw, 6vh) scale(var(--bat-scale, 1));
+  }
+  50% {
+    transform: translate(55vw, -2vh) scale(var(--bat-scale, 1));
+  }
+  75% {
+    transform: translate(85vw, 8vh) scale(var(--bat-scale, 1));
+  }
+  100% {
+    transform: translate(112vw, 0) scale(var(--bat-scale, 1));
+  }
+}
+
+@keyframes bat-flap {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.55);
+  }
+}
+
+.halloween-bat {
+  position: absolute;
+  left: 0;
+  animation: bat-fly var(--bat-duration, 26s) linear var(--bat-delay, 0s) infinite;
+}
+
+.halloween-bat > span {
+  display: block;
+  animation: bat-flap 0.35s ease-in-out infinite;
+}
+
+@keyframes ghost-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(4deg);
+  }
+}
+
+.animate-ghost-float {
+  animation: ghost-float 3.5s ease-in-out infinite;
+}
+
+@keyframes pumpkin-flicker {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgb(255 140 0 / 0.7));
+  }
+  45% {
+    filter: drop-shadow(0 0 14px rgb(255 140 0 / 1));
+  }
+  60% {
+    filter: drop-shadow(0 0 4px rgb(255 140 0 / 0.5));
+  }
+}
+
+.animate-pumpkin-flicker {
+  animation: pumpkin-flicker 2.4s ease-in-out infinite;
 }
 
 @keyframes panda-breathe {
