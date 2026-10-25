@@ -17,6 +17,10 @@
 		"wrangler": "^4.129.0"
 	},
 	"dependencies": {
-		"postal-mime": "^3.0.0"
+		"postal-mime": "^4.1.4"
+	},
+	"allowScripts": {
+		"workerd@1.20261019.1": true,
+		"esbuild@0.28.2": true
 	}
 }
