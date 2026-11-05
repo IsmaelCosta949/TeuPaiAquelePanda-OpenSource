@@ -1,5 +1,3 @@
-// Até ~1e11 o valor só faz sentido como segundos (ano 5138); acima disso,
-// milissegundos. Cobre o uso normal sem pedir que a pessoa escolha a unidade.
 const MS_THRESHOLD = 1e11;
 
 export function parseTimestamp(input: string): number | null {

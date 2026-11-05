@@ -3,8 +3,6 @@ import { getToolContent } from "./toolContent";
 
 const SITE_URL = import.meta.env.VITE_SITE_URL;
 const SITE_NAME = "Teu Pai, Aquele Panda";
-// Logo horizontal (677x369, ~1.83:1) — proporção próxima à do cartão grande
-// (1.91:1). Uma arte dedicada de 1200x630 deixaria a prévia ainda melhor.
 const OG_IMAGE = `${SITE_URL}/teupaiaquelepanda_logo.png`;
 const OG_IMAGE_WIDTH = "677";
 const OG_IMAGE_HEIGHT = "369";

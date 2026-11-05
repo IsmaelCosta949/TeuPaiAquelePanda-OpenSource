@@ -1,7 +1,7 @@
 import type { Route } from "./+types/suporte";
 import { buildPageMeta } from "../lib/seo";
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ }: Route.MetaArgs) {
   return buildPageMeta({
     title: "Suporte — Teu Pai, Aquele Panda",
     description:

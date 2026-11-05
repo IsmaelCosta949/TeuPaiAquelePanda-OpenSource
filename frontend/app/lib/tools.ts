@@ -1,13 +1,3 @@
-// Catálogo central das ferramentas do site. Sem JSX nem ícones de propósito:
-// este arquivo é importado por routes.ts e react-router.config.ts, que rodam
-// no Node durante o build. Alimenta o menu, o grid da home, as rotas, o
-// pré-render, o sitemap e o SEO.
-//
-// Para adicionar uma ferramenta:
-//   1. uma entrada em TOOLS (o slug é também o nome do arquivo da rota);
-//   2. app/routes/tools/<slug>.tsx;
-//   3. um ícone em components/toolIcons.ts.
-
 export type ToolCategory = "email" | "documentos" | "dev" | "texto";
 
 export const CATEGORIES: Record<

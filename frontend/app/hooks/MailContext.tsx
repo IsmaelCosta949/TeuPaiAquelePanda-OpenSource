@@ -24,7 +24,6 @@ const POLL_INTERVAL_MS = 10_000;
 const MIN_REFRESH_MS = 2000;
 
 type MailContextValue = {
-  /** false até o endereço salvo ser lido do localStorage (só no cliente). */
   ready: boolean;
   address: string | null;
   messages: Message[];
@@ -43,10 +42,6 @@ type MailContextValue = {
 const MailContext = createContext<MailContextValue | null>(null);
 
 export function MailProvider({ children }: { children: ReactNode }) {
-  // O estado começa vazio (igual ao HTML pré-renderizado, que não tem acesso ao
-  // localStorage) e o endereço salvo é restaurado num efeito, depois da
-  // hidratação. Ler o localStorage direto no useState causava mismatch de
-  // hidratação para quem já tinha um endereço ativo.
   const [ready, setReady] = useState(false);
   const [address, setAddress] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -171,7 +166,7 @@ export function MailProvider({ children }: { children: ReactNode }) {
 
   function handleCopy() {
     if (!address) return;
-    navigator.clipboard?.writeText(address).catch(() => {});
+    navigator.clipboard?.writeText(address).catch(() => { });
     setCopied(true);
     if (copyTimeout.current) clearTimeout(copyTimeout.current);
     copyTimeout.current = setTimeout(() => setCopied(false), 1500);

@@ -76,25 +76,31 @@ body {
   0% {
     transform: translate(-10vw, 0) scale(var(--bat-scale, 1));
   }
+
   25% {
     transform: translate(25vw, 6vh) scale(var(--bat-scale, 1));
   }
+
   50% {
     transform: translate(55vw, -2vh) scale(var(--bat-scale, 1));
   }
+
   75% {
     transform: translate(85vw, 8vh) scale(var(--bat-scale, 1));
   }
+
   100% {
     transform: translate(112vw, 0) scale(var(--bat-scale, 1));
   }
 }
 
 @keyframes bat-flap {
+
   0%,
   100% {
     transform: scaleX(1);
   }
+
   50% {
     transform: scaleX(0.55);
   }
@@ -106,16 +112,18 @@ body {
   animation: bat-fly var(--bat-duration, 26s) linear var(--bat-delay, 0s) infinite;
 }
 
-.halloween-bat > span {
+.halloween-bat>span {
   display: block;
   animation: bat-flap 0.35s ease-in-out infinite;
 }
 
 @keyframes ghost-float {
+
   0%,
   100% {
     transform: translateY(0) rotate(-4deg);
   }
+
   50% {
     transform: translateY(-10px) rotate(4deg);
   }
@@ -126,13 +134,16 @@ body {
 }
 
 @keyframes pumpkin-flicker {
+
   0%,
   100% {
     filter: drop-shadow(0 0 6px rgb(255 140 0 / 0.7));
   }
+
   45% {
     filter: drop-shadow(0 0 14px rgb(255 140 0 / 1));
   }
+
   60% {
     filter: drop-shadow(0 0 4px rgb(255 140 0 / 0.5));
   }
@@ -143,10 +154,12 @@ body {
 }
 
 @keyframes panda-breathe {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-4px);
   }
@@ -161,6 +174,7 @@ body {
     transform: scale(0.8);
     opacity: 0;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -172,11 +186,13 @@ body {
 }
 
 @keyframes bamboo-grow {
+
   0%,
   100% {
     transform: scaleY(0.55);
     opacity: 0.6;
   }
+
   50% {
     transform: scaleY(1);
     opacity: 1;
@@ -189,10 +205,12 @@ body {
 }
 
 @keyframes bamboo-leaf-sway {
+
   0%,
   100% {
     transform: rotate(-4deg);
   }
+
   50% {
     transform: rotate(4deg);
   }
@@ -205,6 +223,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -272,16 +291,12 @@ body {
   --accent: var(--color-panda-cream);
   --accent-foreground: var(--color-panda-ink);
   --destructive: var(--color-panda-red);
-  --border: color-mix(
-    in srgb,
-    var(--color-panda-ink) 10%,
-    var(--color-panda-paper)
-  );
-  --input: color-mix(
-    in srgb,
-    var(--color-panda-ink) 15%,
-    var(--color-panda-paper)
-  );
+  --border: color-mix(in srgb,
+      var(--color-panda-ink) 10%,
+      var(--color-panda-paper));
+  --input: color-mix(in srgb,
+      var(--color-panda-ink) 15%,
+      var(--color-panda-paper));
   --ring: var(--color-panda-red);
   --radius: 0.75rem;
   --chart-1: oklch(0.87 0 0);
@@ -337,9 +352,11 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }

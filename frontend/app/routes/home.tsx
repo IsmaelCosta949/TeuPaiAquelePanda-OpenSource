@@ -6,7 +6,7 @@ import { useMail } from "../hooks/MailContext";
 import { buildPageMeta, buildSiteJsonLd } from "../lib/seo";
 import { CATEGORIES, toolsByCategory, type ToolCategory } from "../lib/tools";
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ }: Route.MetaArgs) {
   return [
     ...buildPageMeta({
       title:

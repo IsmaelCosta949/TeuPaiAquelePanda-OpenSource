@@ -1,7 +1,3 @@
-// Números de cartão que apenas passam no algoritmo de Luhn — não são cartões
-// reais e não funcionam em compras. Servem para testar máscaras e validações
-// de formulário.
-
 export type CardBrand = "visa" | "mastercard" | "amex" | "elo";
 
 export const CARD_BRANDS: Record<
@@ -30,7 +26,6 @@ function randomDigits(length: number): string {
 
 function luhnSum(digits: string): number {
   let sum = 0;
-  // Percorre da direita para a esquerda dobrando de dois em dois.
   for (let i = 0; i < digits.length; i++) {
     let d = Number(digits[digits.length - 1 - i]);
     if (i % 2 === 1) {
@@ -56,8 +51,6 @@ export function generateCard(brand: CardBrand): FakeCard {
   const spec = CARD_BRANDS[brand];
   const prefix = spec.prefixes[Math.floor(Math.random() * spec.prefixes.length)];
   const body = prefix + randomDigits(spec.length - prefix.length - 1);
-  // Com o dígito verificador ainda como 0, a soma tem o peso certo para
-  // calcular o que falta até o próximo múltiplo de 10.
   const check = (10 - (luhnSum(body + "0") % 10)) % 10;
 
   const now = new Date();

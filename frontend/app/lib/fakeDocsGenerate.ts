@@ -1,7 +1,3 @@
-// Geração de CPF/CNPJ ficticios com dígitos verificadores matematicamente
-// válidos (mesmo algoritmo da Receita Federal), para uso em testes de forms,
-// QA e ambientes de dev — não correspondem a documentos reais.
-
 function randomDigit(): number {
   return Math.floor(Math.random() * 10);
 }
@@ -40,9 +36,6 @@ export function generateCNPJ(): string {
   return [...base, ...branch, d1, d2].join("");
 }
 
-// RG não tem dígito verificador padronizado nacionalmente (cada estado emite
-// o seu) — usamos o modelo do IFP-SP, referência mais comum em validações
-// desse tipo, com 8 dígitos + 1 dígito/"X" verificador (mod 11).
 export function generateRG(): string {
   const base = Array.from({ length: 8 }, randomDigit);
   const sum = base.reduce((acc, d, i) => acc + d * (2 + i), 0);
