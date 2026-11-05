@@ -76,9 +76,9 @@ export function Header() {
               Aquele Panda
               <span
                 aria-hidden="true"
-                className="animate-pumpkin-flicker ml-1 inline-block text-base sm:text-lg"
+                className="animate-star-glow ml-1 inline-block text-base sm:text-lg"
               >
-                🎃
+                🎄
               </span>
             </span>
           </span>

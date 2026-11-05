@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 import { AdSenseScript } from "./AdSenseScript";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { HalloweenDecor } from "./HalloweenDecor";
+import { ChristmasDecor, ChristmasLights } from "./ChristmasDecor";
 import { UpdateAnnouncementDialog } from "./UpdateAnnouncementDialog";
 import { MailProvider } from "../hooks/MailContext";
 import { UPDATE_DATE } from "../lib/updateAnnouncement";
@@ -37,8 +37,9 @@ export default function SiteLayout() {
       >
         Pular para o conteúdo
       </a>
-      <HalloweenDecor />
+      <ChristmasDecor />
       <div className="relative z-10 min-h-screen flex flex-col">
+        <ChristmasLights />
         <Header />
         <main
           id="main-content"

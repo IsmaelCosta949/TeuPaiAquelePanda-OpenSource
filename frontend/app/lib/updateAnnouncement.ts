@@ -1,9 +1,9 @@
-export const UPDATE_DATE = "2026-10-22";
+export const UPDATE_DATE = "2026-12-01";
 
-export const UPDATE_TITLE = "Feliz Halloween! 🎃";
+export const UPDATE_TITLE = "Feliz Natal! 🎄";
 
 export const UPDATE_ITEMS = [
-  "Feliz Halloween! 👻 O Panda entrou no ritmo da festa e o site ganhou um visual assombrado.",
-  "Abóboras, morcegos e teias de aranha estão rondando por aí. Cuidado com os sustos! 🦇🕸️",
-  "Seus e-mails temporários e todas as ferramentas continuam funcionando normalmente. Aproveite a noite! 🍬",
+  "Feliz Natal! 🎅 O site ganhou um visual natalino, com luzinhas piscando e neve caindo por aí. ✨❄️",
+  "Nova ferramenta: HTTP Status Pandas! 🐼 Veja os 62 códigos de status HTTP (200, 404, 418, 500…) com uma foto de panda e uma explicação em português de cada um. Dá para buscar por código, nome ou significado.",
+  "Seus e-mails temporários e todas as ferramentas continuam funcionando normalmente. Boas festas! 🎁",
 ];
