@@ -11,6 +11,7 @@ import {
   KeyRound,
   LetterText,
   Mail,
+  PawPrint,
   QrCode,
   ShieldCheck,
   TextAlignStart,
@@ -35,6 +36,7 @@ export const TOOL_ICONS: Record<string, LucideIcon> = {
   "gerador-de-cartao-de-credito": CreditCard,
   "conversor-de-timestamp": Clock,
   "gerador-de-hash": Hash,
+  "http-status-pandas": PawPrint,
   "gerador-de-qr-code": QrCode,
   "gerador-de-lorem-ipsum": TextAlignStart,
 };

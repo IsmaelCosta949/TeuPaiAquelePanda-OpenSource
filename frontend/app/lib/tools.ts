@@ -168,6 +168,15 @@ export const TOOLS: Tool[] = [
       "Crie QR Codes a partir de qualquer URL ou texto e baixe a imagem em PNG, tudo no navegador.",
   },
   {
+    slug: "http-status-pandas",
+    name: "HTTP Status Pandas",
+    tagline: "Os códigos de status HTTP explicados por pandas.",
+    category: "dev",
+    seoTitle: "HTTP Status Pandas — códigos HTTP com pandas — Teu Pai, Aquele Panda",
+    seoDescription:
+      "Consulte os códigos de status HTTP (200, 404, 418, 500…) com um panda para cada um e uma explicação simples do que significam.",
+  },
+  {
     slug: "contador-de-caracteres",
     name: "Contador de caracteres",
     tagline: "Caracteres, palavras, linhas e tempo de leitura.",
