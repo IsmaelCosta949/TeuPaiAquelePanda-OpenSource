@@ -1,5 +1,3 @@
-// Pessoa fictícia para popular formulários. Nada aqui corresponde a uma
-// pessoa real; o e-mail usa example.com (domínio reservado pela RFC 2606).
 import { generateCPF } from "./fakeDocsGenerate";
 import { formatCPF } from "./format";
 
@@ -31,8 +29,6 @@ const DISTRICTS = [
   "São José", "Boa Vista", "Parque Industrial",
 ];
 
-// ddd e início de CEP aproximados de cada capital — suficiente para parecer
-// plausível em validações de formato.
 const CITIES = [
   { city: "São Paulo", uf: "SP", ddd: "11", cep: "01" },
   { city: "Rio de Janeiro", uf: "RJ", ddd: "21", cep: "20" },

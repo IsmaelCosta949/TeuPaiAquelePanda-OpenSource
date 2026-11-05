@@ -12,7 +12,6 @@ export function getTextStats(text: string): TextStats {
   const trimmed = text.trim();
   const words = trimmed ? trimmed.split(/\s+/).length : 0;
   return {
-    // Array.from conta emojis e outros caracteres fora do BMP como um só.
     characters: Array.from(text).length,
     charactersNoSpaces: Array.from(text.replace(/\s/g, "")).length,
     words,

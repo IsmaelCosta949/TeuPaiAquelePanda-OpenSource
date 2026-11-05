@@ -644,6 +644,59 @@ export const TOOL_CONTENT: Record<string, ToolContent> = {
       },
     ],
   },
+  "http-status-pandas": {
+    about:
+      "Todo servidor responde a uma requisição com um código de status HTTP de três dígitos. Aqui cada um dos 62 códigos registrados ganhou uma foto de panda, junto com uma explicação simples do que ele significa de verdade.",
+    steps: [
+      "Busque pelo código ou pelo nome, ou filtre por classe (1xx a 5xx).",
+      "Clique no panda do código que você quer entender.",
+      "Leia o significado e clique para copiar o código e o nome.",
+    ],
+    sections: [
+      {
+        title: "As cinco classes de status HTTP",
+        paragraphs: [
+          "O primeiro dígito indica a classe da resposta. Memorizar as classes já resolve metade das dúvidas na hora de depurar uma API.",
+        ],
+        list: [
+          "1xx (informativo): a requisição foi recebida e o processo continua.",
+          "2xx (sucesso): a requisição foi entendida e atendida.",
+          "3xx (redirecionamento): é preciso fazer outra requisição, em outra URL.",
+          "4xx (erro do cliente): a requisição tem algum problema, como URL errada ou falta de permissão.",
+          "5xx (erro do servidor): a requisição estava certa, mas o servidor falhou.",
+        ],
+      },
+      {
+        title: "Dúvidas comuns entre códigos parecidos",
+        paragraphs: [
+          "401 e 403 são os mais confundidos: o 401 diz que você não está autenticado, e o 403 diz que você está autenticado, mas não tem permissão. Já 301 e 302 diferem pela permanência: o 301 é definitivo e buscadores atualizam o endereço, o 302 é temporário.",
+          "Entre os erros de servidor, 502 e 504 costumam aparecer atrás de proxies e balanceadores: no 502 a resposta do servidor de origem veio inválida, e no 504 ela simplesmente não veio a tempo.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: "O que significa o erro 404?",
+        answer:
+          "404 Not Found significa que o servidor não encontrou nada na URL pedida. Costuma ser link quebrado, página removida ou endereço digitado errado.",
+      },
+      {
+        question: "Qual a diferença entre 401 e 403?",
+        answer:
+          "No 401 você não está autenticado (falta login ou token válido). No 403 o servidor sabe quem você é, mas você não tem permissão para acessar o recurso.",
+      },
+      {
+        question: "O que é o código 418?",
+        answer:
+          "418 I'm a teapot nasceu como piada do April Fools de 1998 (RFC 2324): o servidor é uma chaleira e se recusa a preparar café. Alguns serviços ainda o usam de brincadeira.",
+      },
+      {
+        question: "As fotos de panda são oficiais?",
+        answer:
+          "Não. São fotos de pandas-gigantes com licença livre, do Wikimedia Commons, escolhidas para este site e inspiradas no projeto HTTP Cats. O autor e a licença de cada foto aparecem abaixo da imagem.",
+      },
+    ],
+  },
   "gerador-de-uuid": {
     about:
       "Um UUID v4 é um identificador de 128 bits gerado de forma aleatória, muito usado como chave primária e identificador de recursos. Aqui eles são criados no navegador com crypto.randomUUID().",

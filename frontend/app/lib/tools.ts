@@ -1,13 +1,3 @@
-// Catálogo central das ferramentas do site. Sem JSX nem ícones de propósito:
-// este arquivo é importado por routes.ts e react-router.config.ts, que rodam
-// no Node durante o build. Alimenta o menu, o grid da home, as rotas, o
-// pré-render, o sitemap e o SEO.
-//
-// Para adicionar uma ferramenta:
-//   1. uma entrada em TOOLS (o slug é também o nome do arquivo da rota);
-//   2. app/routes/tools/<slug>.tsx;
-//   3. um ícone em components/toolIcons.ts.
-
 export type ToolCategory = "email" | "documentos" | "dev" | "texto";
 
 export const CATEGORIES: Record<
@@ -176,6 +166,15 @@ export const TOOLS: Tool[] = [
     seoTitle: "Gerador de QR Code grátis — Teu Pai, Aquele Panda",
     seoDescription:
       "Crie QR Codes a partir de qualquer URL ou texto e baixe a imagem em PNG, tudo no navegador.",
+  },
+  {
+    slug: "http-status-pandas",
+    name: "HTTP Status Pandas",
+    tagline: "Os códigos de status HTTP explicados por pandas.",
+    category: "dev",
+    seoTitle: "HTTP Status Pandas — códigos HTTP com pandas — Teu Pai, Aquele Panda",
+    seoDescription:
+      "Consulte os códigos de status HTTP (200, 404, 418, 500…) com um panda para cada um e uma explicação simples do que significam.",
   },
   {
     slug: "contador-de-caracteres",
