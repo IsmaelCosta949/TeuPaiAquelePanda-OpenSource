@@ -12,19 +12,20 @@
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-display: "Fredoka Variable", "Fredoka", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 
-  /* Paleta Halloween: os nomes "panda-*" são mantidos para não reescrever
-     todos os componentes; aqui red = abóbora, bamboo = verde-gosma. */
-  --color-panda-ink: #14081f;
-  --color-panda-charcoal: #24123a;
-  --color-panda-paper: #fbf5ec;
-  --color-panda-cream: #f4e6d3;
-  --color-panda-red: #c2410c;
-  --color-panda-red-dark: #9a3412;
-  --color-panda-red-light: #ff9a3c;
-  --color-panda-bamboo: #6aa84f;
-  --color-panda-bamboo-dark: #4d8a36;
-  --color-panda-gray: #6b5f78;
-  --color-halloween-purple: #7c3aed;
+  /* Paleta de Natal: os nomes "panda-*" são mantidos para não reescrever
+     todos os componentes; aqui red = vermelho natalino, bamboo = verde-pinheiro,
+     ink/charcoal = verde-noite e paper/cream = tons de neve. */
+  --color-panda-ink: #0c1f1a;
+  --color-panda-charcoal: #14302a;
+  --color-panda-paper: #f9f6f0;
+  --color-panda-cream: #efe7da;
+  --color-panda-red: #b91c1c;
+  --color-panda-red-dark: #991b1b;
+  --color-panda-red-light: #ff8a80;
+  --color-panda-bamboo: #2f855a;
+  --color-panda-bamboo-dark: #276749;
+  --color-panda-gray: #5b6b64;
+  --color-xmas-gold: #d4a017;
 }
 
 html,
@@ -44,113 +45,108 @@ body {
   font-family: var(--font-display);
 }
 
-/* ---------- Halloween ---------- */
+/* ---------- Natal ---------- */
 body {
   background-image:
-    radial-gradient(ellipse 60% 40% at 50% -10%, rgb(255 154 60 / 0.28), transparent),
-    radial-gradient(ellipse 45% 35% at 0% 100%, rgb(124 58 237 / 0.10), transparent);
+    radial-gradient(ellipse 60% 40% at 50% -10%, rgb(212 160 23 / 0.22), transparent),
+    radial-gradient(ellipse 45% 35% at 0% 100%, rgb(47 133 90 / 0.10), transparent);
   background-attachment: fixed;
 }
 
 .dark body {
   background-image:
-    radial-gradient(ellipse 60% 40% at 50% -10%, rgb(124 58 237 / 0.28), transparent),
-    radial-gradient(ellipse 40% 30% at 100% 100%, rgb(255 122 0 / 0.12), transparent);
+    radial-gradient(ellipse 60% 40% at 50% -10%, rgb(47 133 90 / 0.30), transparent),
+    radial-gradient(ellipse 40% 30% at 100% 100%, rgb(185 28 28 / 0.16), transparent);
   background-attachment: fixed;
 }
 
-.halloween-glow {
-  text-shadow: 0 0 18px rgb(255 122 0 / 0.35);
+.xmas-glow {
+  text-shadow: 0 0 18px rgb(212 160 23 / 0.35);
 }
 
-.cobweb {
-  position: absolute;
-  color: rgb(60 30 90 / 0.35);
-}
-
-.dark .cobweb {
-  color: rgb(255 255 255 / 0.28);
-}
-
-@keyframes bat-fly {
+/* Neve: cada floco recebe posição, tamanho e tempo pelas variáveis inline. */
+@keyframes snow-fall {
   0% {
-    transform: translate(-10vw, 0) scale(var(--bat-scale, 1));
-  }
-
-  25% {
-    transform: translate(25vw, 6vh) scale(var(--bat-scale, 1));
+    transform: translate3d(0, -6vh, 0);
   }
 
   50% {
-    transform: translate(55vw, -2vh) scale(var(--bat-scale, 1));
-  }
-
-  75% {
-    transform: translate(85vw, 8vh) scale(var(--bat-scale, 1));
+    transform: translate3d(var(--snow-drift, 20px), 55vh, 0);
   }
 
   100% {
-    transform: translate(112vw, 0) scale(var(--bat-scale, 1));
+    transform: translate3d(0, 106vh, 0);
   }
 }
 
-@keyframes bat-flap {
-
-  0%,
-  100% {
-    transform: scaleX(1);
-  }
-
-  50% {
-    transform: scaleX(0.55);
-  }
-}
-
-.halloween-bat {
+.xmas-snowflake {
   position: absolute;
-  left: 0;
-  animation: bat-fly var(--bat-duration, 26s) linear var(--bat-delay, 0s) infinite;
+  top: 0;
+  left: var(--snow-x, 50%);
+  width: var(--snow-size, 6px);
+  height: var(--snow-size, 6px);
+  border-radius: 9999px;
+  background: #fff;
+  opacity: var(--snow-opacity, 0.8);
+  border: 1px solid rgb(100 140 180 / 0.7);
+  box-shadow: 0 0 4px rgb(100 140 180 / 0.5);
+  animation: snow-fall var(--snow-duration, 14s) linear var(--snow-delay, 0s) infinite;
 }
 
-.halloween-bat>span {
-  display: block;
-  animation: bat-flap 0.35s ease-in-out infinite;
+.dark .xmas-snowflake {
+  border-color: transparent;
+  box-shadow: 0 0 4px rgb(255 255 255 / 0.5);
 }
 
-@keyframes ghost-float {
+@keyframes light-twinkle {
 
   0%,
   100% {
-    transform: translateY(0) rotate(-4deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 6px var(--light-color));
   }
 
   50% {
-    transform: translateY(-10px) rotate(4deg);
+    opacity: 0.45;
+    filter: drop-shadow(0 0 1px var(--light-color));
   }
 }
 
-.animate-ghost-float {
-  animation: ghost-float 3.5s ease-in-out infinite;
+.xmas-light {
+  animation: light-twinkle 2.2s ease-in-out infinite;
 }
 
-@keyframes pumpkin-flicker {
+@keyframes ornament-sway {
 
   0%,
   100% {
-    filter: drop-shadow(0 0 6px rgb(255 140 0 / 0.7));
+    transform: rotate(-6deg);
   }
 
-  45% {
-    filter: drop-shadow(0 0 14px rgb(255 140 0 / 1));
-  }
-
-  60% {
-    filter: drop-shadow(0 0 4px rgb(255 140 0 / 0.5));
+  50% {
+    transform: rotate(6deg);
   }
 }
 
-.animate-pumpkin-flicker {
-  animation: pumpkin-flicker 2.4s ease-in-out infinite;
+.animate-ornament-sway {
+  transform-origin: top center;
+  animation: ornament-sway 3.5s ease-in-out infinite;
+}
+
+@keyframes star-glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgb(212 160 23 / 0.7));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 14px rgb(212 160 23 / 1));
+  }
+}
+
+.animate-star-glow {
+  animation: star-glow 2.4s ease-in-out infinite;
 }
 
 @keyframes panda-breathe {
@@ -223,6 +219,10 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
+  .xmas-snowflake {
+    display: none;
+  }
 
   *,
   *::before,

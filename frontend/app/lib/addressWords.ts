@@ -263,7 +263,6 @@ export const NOUNS = [
   "javali",
   "koala",
   "lontra",
-  "morcego",
   "naja",
   "ovelha",
   "pantera",
